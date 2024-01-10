@@ -8,6 +8,10 @@ class ConnexionController
 {
     public function __construct($action)
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         switch ($action) {
             case "index":
                 $this->afficherConnexionView();
@@ -16,9 +20,7 @@ class ConnexionController
                 $this->traiterConnexion();
                 break;
             case "deconnect":
-                unset($_SESSION);
-                session_destroy();
-                header('Location: index.php');
+                $this->deconnecter();
                 break;
         }
     }
@@ -38,14 +40,23 @@ class ConnexionController
         $connectedUser = UserRepository::getUser($login, $password);
 
         if ($connectedUser) {
+            $_SESSION['idUser'] = $connectedUser->getIdUser();
+            $_SESSION['password'] = $connectedUser->getPassword();
+            $_SESSION['login'] = $connectedUser->getLogin();
+            $_SESSION['firstname'] = $connectedUser->getFirstName();
+            $_SESSION['lastname'] = $connectedUser->getLastName();
+
             header("Location: index.php?controller=accueil&action=index");
         } else {
-            // Utilisateur non connecté, définir le message d'erreur dans la variable de session
-            session_start();
             $_SESSION['erreur_connexion'] = "Identifiants incorrects";
             header("Location: index.php?controller=connexion&action=index");
         }
     }
 
+    private function deconnecter()
+    {
+        session_destroy();
+        header('Location: index.php');
+    }
 }
 ?>

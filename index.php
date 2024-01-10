@@ -9,7 +9,10 @@
     <meta name="viewport" content="width=device-width">
     <title>DayPlanner</title>
 </head>
+
 <body>
+
+<?php include_once 'Views/menuView.php'; ?>
 
 <div id="wrapper">
 
