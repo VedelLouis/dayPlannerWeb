@@ -1,0 +1,32 @@
+.date-container {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.jour {
+    font-size: 22px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.date-container h2 {
+    margin-top: 30px;
+}
+
+.jour-actuel {
+    border: 2px solid red;
+    border-radius: 100px;
+}
+
+.heureLigne {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.heureActuelle, .ligneHeureActuelle {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 0;
+}

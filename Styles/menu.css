@@ -2,40 +2,40 @@ body {
     font-family: "Trebuchet MS";
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Empêche le débordement horizontal */
+    overflow-x: hidden;
 }
 
 nav {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1000; /* Assurez-vous que le menu est au-dessus des autres éléments */
+    z-index: 1000;
 }
 
 .menu {
-    display: flex;                /* Transformation en flexbox */
-    padding:0;                    /* Suppression des marges internes */
-    background-color: #fff;       /* Ajout de la couleur d'arrière-plan */
-    justify-content: space-around;/* Alignements des liens dans le menu */
+    display: flex;
+    padding:0;
+    background-color: #fff;
+    justify-content: space-around;
 }
 .menu li {
-    list-style-type: none ;       /* Suppression des puces */
+    list-style-type: none ;
 
 }
 .menu a {
-    display:block;                /* Transformation en block */
-    min-width: 120px;             /* Largeur minimale des liens */
+    display:block;
+    min-width: 120px;
 
-    margin: 0.5rem;               /* Marges externes */
-    padding: 0.4rem 0;            /* Marges internes */
-    text-align: center;           /* Centrage du texte */
-    background-color: #ffffff;    /* Arrière-plan */
-    color: #a163f5;                  /* Couleur du texte */
-    text-decoration: none;        /* Suppression du soulignement */
-    border: 3px solid #a163f5;       /* Ajout d'une bordure */
-    border-radius: 4px;           /* Arrondis des bordures */
+    margin: 0.5rem;
+    padding: 0.4rem 0;
+    text-align: center;
+    background-color: #ffffff;
+    color: #a163f5;
+    text-decoration: none;
+    border: 3px solid #a163f5;
+    border-radius: 4px;
 
-    transition: all 1s ;          /* Ajout des effets de transition */
+    transition: all 1s ;
 }
 .menu a.actif {
     background-color: #005A82 ;
@@ -53,6 +53,5 @@ nav {
     margin-top: -15px;
     margin-right: 15px;
     margin-left: -25px;
-    width: 5%;
-    height: 5%;
+    width: 75px;
 }

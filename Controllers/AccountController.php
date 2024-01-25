@@ -66,17 +66,22 @@ class AccountController
 
         require_once "Repositories/UserRepository.php";
 
-        // Vérifier si le mot de passe actuel correspond à celui de la session
-        if ($mdpActuel !== $_SESSION['password']) {
+        // Récupérer le mot de passe stocké dans la base de données
+        $userData = UserRepository::getUserById($idUser);
+
+        // Vérifier si le mot de passe actuel correspond à celui stocké dans la base de données
+        if (!password_verify($mdpActuel, $userData->getPassword())) {
             $_SESSION['error_message'] = "Mot de passe actuel incorrect.";
             header("Location: index.php?controller=account&action=account");
             exit();
         }
 
+        // Mettre à jour le compte avec le nouveau mot de passe
         UserRepository::updateUser($idUser, $login, $nouveauMdp, $firstname, $lastname);
 
         header("Location: index.php?controller=account&action=account");
     }
+
 
     private function supprimerMonCompte()
     {

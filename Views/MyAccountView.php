@@ -29,16 +29,14 @@
                 <input type="text" class="form-control" name="lastname" value="<?php echo $_SESSION['lastname']; ?>">
             </div>
 
-            <h4>Modifier mon mot de passe</h4>
-
             <div class="form-group">
-                <input type="password" class="form-control" name="mdpActuel" placeholder="Mot de passe actuel">
+                <input type="password" class="form-control" name="mdpActuel" placeholder="Mot de passe actuel" required>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" name="nouveauMdp" placeholder="Nouveau mot de passe" oninput="checkPassword()">
+                <input type="password" class="form-control" name="nouveauMdp" placeholder="Nouveau mot de passe" oninput="checkPassword()" required>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe" oninput="checkPassword()">
+                <input type="password" class="form-control" name="confirmationMdp" placeholder="Confirmer le nouveau mot de passe" oninput="checkPassword()" required>
                 <span id="passwordError" class="error-message"></span>
                 <?php
                 if (isset($_SESSION['error_message'])) {
@@ -47,7 +45,7 @@
                 }
                 ?>
             </div>
-            <button type="submit" class="btn btn-create btn-block" id="submitBtn">Modifier mon compte</button>
+            <button type="submit" class="btn btn-create btn-block" id="submitBtn" disabled>Modifier mon compte</button>
         </form>
 
         <form id="back-form" action="index.php?controller=accueil&action=index" method="post">
@@ -73,9 +71,7 @@
         var errorSpan = document.getElementById('passwordError');
         var submitBtn = document.getElementById('submitBtn');
 
-        // Si le champ "Nouveau mot de passe" est rempli, effectuer la validation
         if (newPassword !== "") {
-            // Les champs de mot de passe sont obligatoires
             if (confirmPassword === "") {
                 errorSpan.innerHTML = "Les champs de mot de passe sont obligatoires.";
                 submitBtn.disabled = true;
@@ -83,7 +79,6 @@
                 errorSpan.innerHTML = "Les nouveaux mots de passe ne correspondent pas.";
                 submitBtn.disabled = true;
             } else {
-                // Si le champ "Mot de passe actuel" est rempli, effectuer la vérification
                 if (mdpActuel === "") {
                     errorSpan.innerHTML = "Le champ 'Mot de passe actuel' est obligatoire.";
                     submitBtn.disabled = true;
@@ -93,7 +88,6 @@
                 }
             }
         } else {
-            // Si le champ "Nouveau mot de passe" est vide, pas besoin de validation des champs de mot de passe
             errorSpan.innerHTML = "";
             submitBtn.disabled = false;
         }
@@ -115,7 +109,6 @@
         window.location.href = 'index.php?controller=account&action=delete';
         alert("Compte supprimé avec succès!");
     }
-
 </script>
 
 </body>

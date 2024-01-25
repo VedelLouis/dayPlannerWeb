@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="10/01 wesh">
-      <change afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="10/01 wesh re">
+      <change afterPath="$PROJECT_DIR$/Styles/accueil.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/AccountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AccountController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ConnexionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ConnexionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/UserRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/account.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/account.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/AccueilView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/AccueilView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/MenuView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MenuView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Views/MyAccountView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MyAccountView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +90,12 @@
       <workItem from="1704787675692" duration="3044000" />
       <workItem from="1704795076566" duration="2784000" />
       <workItem from="1704874326222" duration="2488000" />
-      <workItem from="1704876845961" duration="197000" />
+      <workItem from="1704876845961" duration="9307000" />
+      <workItem from="1704960232430" duration="5982000" />
+      <workItem from="1704974728947" duration="7455000" />
+      <workItem from="1705046769304" duration="20281000" />
+      <workItem from="1705910588809" duration="15781000" />
+      <workItem from="1706169933599" duration="7120000" />
     </task>
     <task id="LOCAL-00001" summary="10/01">
       <option name="closed" value="true" />
@@ -99,7 +113,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704876770059</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="10/01 wesh re">
+      <option name="closed" value="true" />
+      <created>1704877156357</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1704877156357</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -108,7 +130,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="10/01" />
     <MESSAGE value="10/01 wesh" />
-    <option name="LAST_COMMIT_MESSAGE" value="10/01 wesh" />
+    <MESSAGE value="10/01 wesh re" />
+    <option name="LAST_COMMIT_MESSAGE" value="10/01 wesh re" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

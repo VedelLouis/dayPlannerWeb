@@ -5,14 +5,14 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="Styles/style.css" type="text/css">
     <link rel="stylesheet" href="Styles/menu.css" type="text/css">
+    <link rel="stylesheet" href="Styles/accueil.css" type="text/css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="/Images/dayPlannerLogo.png">
     <title>DayPlanner</title>
 </head>
 
 <body>
-
-<?php include_once 'Views/menuView.php'; ?>
 
 <div id="wrapper">
 
@@ -34,6 +34,10 @@
     $controller = filter_input(INPUT_GET, 'controller', FILTER_SANITIZE_STRING);
     if (!$controller) {
         $controller = "connexion";
+    }
+
+    if ($controller !== "connexion" && $controller !== "account") {
+        include_once 'Views/MenuView.php';
     }
 
     switch ($controller) {
@@ -62,10 +66,6 @@
             $c = new \Controllers\AccountController($action);
             break;
 
-    }
-
-    if ($controller !== "connexion" && $controller !== "account") {
-        include_once 'Views/MenuView.php';
     }
 
     ?>

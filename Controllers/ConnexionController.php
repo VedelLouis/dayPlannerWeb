@@ -41,7 +41,6 @@ class ConnexionController
 
         if ($connectedUser) {
             $_SESSION['idUser'] = $connectedUser->getIdUser();
-            $_SESSION['password'] = $connectedUser->getPassword();
             $_SESSION['login'] = $connectedUser->getLogin();
             $_SESSION['firstname'] = $connectedUser->getFirstName();
             $_SESSION['lastname'] = $connectedUser->getLastName();
@@ -52,6 +51,7 @@ class ConnexionController
             header("Location: index.php?controller=connexion&action=index");
         }
     }
+
 
     private function deconnecter()
     {
