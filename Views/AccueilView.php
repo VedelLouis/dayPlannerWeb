@@ -6,35 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendrier Journalier</title>
 
-    <script>
-        function updateClock() {
-            var now = new Date();
-            var hours = now.getHours();
-            var minutes = now.getMinutes();
-            var timeString = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
-
-            document.querySelector('.heureActuelle').innerText = timeString;
-
-            // Assurez-vous que la classe utilisée ici correspond à celle utilisée dans la boucle PHP
-            var currentHourRow = document.querySelector('.heure-row-' + hours);
-            var heureActuelleElement = document.querySelector('.heureActuelle');
-            var ligneHeureActuelle = document.querySelector('.ligneHeureActuelle');
-
-            heureActuelleElement.parentElement.removeChild(heureActuelleElement);
-            currentHourRow.appendChild(heureActuelleElement);
-
-            ligneHeureActuelle.parentElement.removeChild(ligneHeureActuelle);
-            currentHourRow.querySelector('.colLigne').appendChild(ligneHeureActuelle);
-
-            setTimeout(updateClock, 1000);
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            updateClock();
-        });
-    </script>
-
-
 
 
 </head>
@@ -91,24 +62,35 @@ $currentHour = (int)strftime('%H');
 
             echo '<div class="col-auto colHeure">';
             $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
-            echo '<div class="col heure">' . $hour . ':00</div>';
-            if ($i == $currentHour) {
-                echo '<div class="heureActuelle">' . $currentHourMinute . '</div>';
-            }
+            echo '<div class="heure">' . $hour . ':00</div>';
             echo '</div>';
 
             echo '<div class="col colLigne">';
-            echo '<table class="table calendar">';
-            echo '<tbody>';
+
+            echo '<div>';
             echo '<hr class="ligneHeure" />';
-            if ($i === $currentHour) {
-                echo '<hr class="ligneHeureActuelle" />';
-            }
-            echo '</tbody>';
-            echo '</table>';
             echo '</div>';
 
             echo '</div>';
+            echo '</div>';
+
+            if ($i == $currentHour) {
+                echo '<div class="row heureLigneActuelle">';
+
+                echo '<div class="col-auto colHeureActuelle">';
+                echo '<div class="heureActuelle">' . $currentHourMinute . '</div>';
+                echo '</div>';
+
+                echo '<div class="col colLigneActuelle">';
+
+                echo '<div>';
+                echo '<hr class="ligneHeureActuelle" />';
+                echo '</div>';
+
+                echo '</div>';
+
+                echo '</div>';
+            }
         }
         ?>
     </div>

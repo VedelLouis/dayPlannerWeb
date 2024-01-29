@@ -4,18 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="10/01 wesh re">
-      <change afterPath="$PROJECT_DIR$/Styles/accueil.css" afterDir="false" />
+    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="password hash bcrypt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/AccountController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AccountController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/ConnexionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ConnexionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Styles/account.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/account.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Styles/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/menu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/accueil.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/accueil.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/AccueilView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/AccueilView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/MenuView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MenuView.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/MyAccountView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MyAccountView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +90,9 @@
       <workItem from="1704974728947" duration="7455000" />
       <workItem from="1705046769304" duration="20281000" />
       <workItem from="1705910588809" duration="15781000" />
-      <workItem from="1706169933599" duration="7120000" />
+      <workItem from="1706169933599" duration="21123000" />
+      <workItem from="1706256042127" duration="7745000" />
+      <workItem from="1706265826932" duration="9143000" />
     </task>
     <task id="LOCAL-00001" summary="10/01">
       <option name="closed" value="true" />
@@ -121,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704877156357</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="password hash bcrypt">
+      <option name="closed" value="true" />
+      <created>1706178336525</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706178336525</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,7 +136,8 @@
     <MESSAGE value="10/01" />
     <MESSAGE value="10/01 wesh" />
     <MESSAGE value="10/01 wesh re" />
-    <option name="LAST_COMMIT_MESSAGE" value="10/01 wesh re" />
+    <MESSAGE value="password hash bcrypt" />
+    <option name="LAST_COMMIT_MESSAGE" value="password hash bcrypt" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

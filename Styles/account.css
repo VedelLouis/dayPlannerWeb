@@ -36,18 +36,21 @@ body {
     margin-bottom: 15px;
 }
 
-.btn-create, .btn-back {
+.btn-update, .btn-create, .btn-cancel, .btn-back {
     margin-top: 15px;
     background: linear-gradient(to right, #a163f5, #d7a0de);
     color: #fff;
-    padding: 10px;
     border: none;
     border-radius: 3px;
 }
 
-.btn-create:hover, .btn-back:hover {
+.btn-update:hover, .btn-create:hover, .btn-cancel:hover, .btn-back:hover {
     background: linear-gradient(to right, #7a3fba, #b679c7);
     color: white;
+}
+
+.btn-cancel {
+    margin-top: 0;
 }
 
 #deleteAccountBtn {
@@ -57,5 +60,10 @@ body {
 
 .popup {
     display: none;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
 }
 
