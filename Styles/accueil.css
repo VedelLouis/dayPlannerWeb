@@ -19,6 +19,13 @@
     border-radius: 100px;
 }
 
+.heureLigneActuelle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .heureLigne {
     font-size: 20px;
     margin-bottom: 30px;
@@ -28,6 +35,13 @@
     color: red;
     font-weight: bold;
     font-size: 15px;
-    margin-top: 0;
-    margin-top: -30px;
+}
+
+.colHeureActuelle {
+    margin-left: 4px;
+}
+
+.colLigneActuelle {
+    margin-right: -23px;
+    margin-left: 4px;
 }
