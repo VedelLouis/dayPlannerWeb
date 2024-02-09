@@ -24,17 +24,14 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .heureLigne {
     font-size: 20px;
     margin-bottom: 30px;
-}
-
-.heureActuelle, .ligneHeureActuelle {
-    color: red;
-    font-weight: bold;
-    font-size: 15px;
 }
 
 .colHeureActuelle {
@@ -44,4 +41,31 @@
 .colLigneActuelle {
     margin-right: -23px;
     margin-left: 4px;
+}
+
+#dateForm {
+    display: flex;
+    justify-content: end;
+    margin-bottom: -30px;
+    margin-right: 50px;
+}
+
+.btn-date {
+    background: linear-gradient(to right, #a163f5, #d7a0de);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+}
+
+.btn-date:hover {
+    background: linear-gradient(to right, #7a3fba, #b679c7);
+    color: white;
+}
+
+.flechel {
+    margin-left: 50px;
+}
+
+.flecher {
+    margin-right: 50px;
 }

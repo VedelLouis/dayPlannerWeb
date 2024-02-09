@@ -9,7 +9,7 @@
     <a href="index.php?controller=accueil&action=index"><img id="logo" src="Images/dayPlannerLogo.png"></a>
 <ul class="menu">
     <li>
-        <a href="index.php?controller=accueil&action=index">Mon planning</a>
+        <a href="index.php?controller=accueil&action=index">Aujourd'hui</a>
     </li>
     <li>
         <a href="index.php?controller=account&action=account">Mon compte</a>
