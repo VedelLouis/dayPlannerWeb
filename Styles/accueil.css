@@ -15,8 +15,7 @@
 }
 
 .jour-actuel {
-    border: 2px solid red;
-    border-radius: 100px;
+    border: 2px solid #a163f5;
 }
 
 .heureLigneActuelle {
@@ -68,4 +67,22 @@
 
 .flecher {
     margin-right: 50px;
+}
+
+.jour-actuel-today {
+    background-color: red;
+}
+
+.jour-actuel-today-both {
+    background-color: red;
+    border: 2px solid #a163f5;
+}
+
+.btn-jour {
+    font-size: 22px;
+    border-radius: 100px;
+}
+
+.btn-jour:hover {
+    border: 2px solid black;
 }

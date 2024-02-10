@@ -11,10 +11,11 @@
 <body>
 <?php
 
+$today = strftime("%A %e %B %Y");
 $date = filter_input(INPUT_GET, 'dateCalendar', FILTER_SANITIZE_STRING);
 setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 if ($date == NULL || $date == date('Y-m-d')) {
-    $dateActuelle = strftime("%A %e %B %Y");
+    $dateActuelle = $today;
 
     $jourSemaineActuel = strftime("%A");
     $jourMoisActuel = ltrim(strftime("%e"), ' ');
@@ -26,6 +27,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
     $decalage = array_search($jourSemaineActuel, $joursSemaine);
 
     $currentHour = (int)strftime('%H');
+    $previousDate = date('Y-m-d', strtotime(' -1 day'));
+    $nextDate = date('Y-m-d', strtotime(' +1 day'));
+
 } else {
     $dateActuelle = strftime("%A %e %B %Y", strtotime($date));
 
@@ -39,6 +43,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
     $decalage = array_search($jourSemaineActuel, $joursSemaine);
 
     $currentHour = (int)strftime('%H');
+    $previousDate = date('Y-m-d', strtotime(' -1 day', strtotime($date)));
+    $nextDate = date('Y-m-d', strtotime(' +1 day', strtotime($date)));
 }
 
 ?>
@@ -51,7 +57,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
 <div class="date-container">
     <div class="row">
         <div class="col-auto  flechel d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangeBefore()" class="btn btn-light"><i class="bi bi-caret-left fs-2"></i></button>
+            <button type="button" onclick="onDateChangePrevious('<?php echo $previousDate ?>');" class="btn btn-light"><i class="bi bi-caret-left fs-2"></i></button>
         </div>
 
         <div class="col jours-et-dates">
@@ -74,9 +80,20 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
                 for ($i = 0; $i < 7; $i++) {
                     $jourAffiche = $jourMoisActuel - $decalage + $i;
-                    $classeJourActuel = ($jourAffiche == $jourMoisActuel) ? 'jour-actuel' : '';
+                    $jourAfficheTimestamp = strtotime($date . " +$i day");
 
-                    echo '<div class="col ' . $classeJourActuel . '">';
+                    // Extraire le jour du mois de la date actuelle
+                    $jourActuel = (int)strftime("%e");
+
+                    if ($jourAffiche == $jourMoisActuel) {
+                        $classeJourActuel = 'jour-actuel';
+                    } elseif ($jourAffiche == $jourMoisActuel && $dateActuelle == $today) {
+                        $classeJourActuel = 'jour-actuel-today';
+                    } else {
+                        $classeJourActuel = '';
+                    }
+
+                    echo '<button type="button" class="col btn btn-jour ' . $classeJourActuel . '">';
 
                     if ($jourAffiche <= 0) {
                         // Si le jour est dans le mois précédent
@@ -91,15 +108,15 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         echo str_pad($jourAffiche, 2, '0', STR_PAD_LEFT);
                     }
 
-
-                    echo '</div>';
+                    echo '</button>';
                 }
                 ?>
             </div>
         </div>
 
         <div class="col-auto flecher d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangeAfter()" class="btn btn-light"><i class="bi bi-caret-right fs-2"></i></button>
+            <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light"><i class="bi bi-caret-right fs-2"></i></button>
+
         </div>
     </div>
 
@@ -252,16 +269,12 @@ if ($date == NULL || $date == date('Y-m-d')) {
         document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + newDate;
     }
 
-    function onDateChangeBefore() {
-        var newDate = document.getElementById("dateCalendar").value;
-        console.log(newDate);
-        document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + newDate;
+    function onDateChangePrevious(previousDate) {
+        document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + previousDate;
     }
 
-    function onDateChangeAfter() {
-        var newDate = document.getElementById("dateCalendar").value;
-        console.log(newDate);
-        document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + newDate;
+    function onDateChangeNext(nextDate) {
+        document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + nextDate;
     }
 
 </script>
