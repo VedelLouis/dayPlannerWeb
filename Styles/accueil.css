@@ -70,11 +70,11 @@
 }
 
 .jour-actuel-today {
-    background-color: red;
+    color: red;
 }
 
 .jour-actuel-today-both {
-    background-color: red;
+    color: red;
     border: 2px solid #a163f5;
 }
 

@@ -84,10 +84,12 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
                     $dateBouton = date('Y-m-d', strtotime($annee . '-' . $mois . '-' . $jourAffiche));
 
-                    if ($jourAffiche == $jourMoisActuel) {
-                        $classeJourActuel = 'jour-actuel';
-                    } elseif ($jourAffiche == $jourMoisActuel && $dateActuelle == $today) {
+                    if ($jourAffiche == $jourMoisActuel && $dateBouton == date('Y-m-d')) {
+                        $classeJourActuel = 'jour-actuel-today-both';
+                    } elseif ($dateBouton == date('Y-m-d')) {
                         $classeJourActuel = 'jour-actuel-today';
+                    } elseif ($jourAffiche == $jourMoisActuel) {
+                        $classeJourActuel = 'jour-actuel';
                     } else {
                         $classeJourActuel = '';
                     }
