@@ -16,7 +16,7 @@ $date = filter_input(INPUT_GET, 'dateCalendar', FILTER_SANITIZE_STRING);
 setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
 if ($date == NULL || $date == date('Y-m-d')) {
     $dateActuelle = $today;
-
+    $date = date('Y-m-d');
     $jourSemaineActuel = strftime("%A");
     $jourMoisActuel = ltrim(strftime("%e"), ' ');
     $moisActuel = strftime("%B");
@@ -46,7 +46,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
     $previousDate = date('Y-m-d', strtotime(' -1 day', strtotime($date)));
     $nextDate = date('Y-m-d', strtotime(' +1 day', strtotime($date)));
 }
-
 ?>
 
 <form id="dateForm">
@@ -80,10 +79,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
                 for ($i = 0; $i < 7; $i++) {
                     $jourAffiche = $jourMoisActuel - $decalage + $i;
-                    $jourAfficheTimestamp = strtotime($date . " +$i day");
-
                     // Extraire le jour du mois de la date actuelle
                     $jourActuel = (int)strftime("%e");
+
+                    $dateBouton = date('Y-m-d', strtotime($annee . '-' . $mois . '-' . $jourAffiche));
 
                     if ($jourAffiche == $jourMoisActuel) {
                         $classeJourActuel = 'jour-actuel';
@@ -93,7 +92,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         $classeJourActuel = '';
                     }
 
-                    echo '<button type="button" class="col btn btn-jour ' . $classeJourActuel . '">';
+                    echo '<button type="button" class="col btn btn-jour ' . $classeJourActuel . '" onclick="goToDate(\'' . $dateBouton . '\')">';
 
                     if ($jourAffiche <= 0) {
                         // Si le jour est dans le mois précédent
@@ -275,6 +274,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
     function onDateChangeNext(nextDate) {
         document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + nextDate;
+    }
+
+    function goToDate(date) {
+        document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + date;
     }
 
 </script>
