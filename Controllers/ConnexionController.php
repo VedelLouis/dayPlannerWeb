@@ -8,9 +8,6 @@ class ConnexionController
 {
     public function __construct($action)
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
 
         switch ($action) {
             case "index":
@@ -37,17 +34,11 @@ class ConnexionController
 
         require_once "Repositories/UserRepository.php";
 
-        $connectedUser = UserRepository::getUser($login, $password);
+        $user = UserRepository::getUser($login, $password);
 
-        if ($connectedUser) {
-            $_SESSION['idUser'] = $connectedUser->getIdUser();
-            $_SESSION['login'] = $connectedUser->getLogin();
-            $_SESSION['firstname'] = $connectedUser->getFirstName();
-            $_SESSION['lastname'] = $connectedUser->getLastName();
-
+        if ($user) {
             header("Location: index.php?controller=accueil&action=index");
         } else {
-            $_SESSION['erreur_connexion'] = "Identifiants incorrects";
             header("Location: index.php?controller=connexion&action=index");
         }
     }
@@ -55,7 +46,7 @@ class ConnexionController
 
     private function deconnecter()
     {
-        session_destroy();
+        UserRepository::deconnectUser();
         header('Location: index.php');
     }
 }

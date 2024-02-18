@@ -15,12 +15,10 @@
         <h2>Connexion au site</h2>
 
         <?php
-        session_start();
-
-        if (isset($_SESSION['erreur_connexion'])) {
+      /*  if (isset($_SESSION['erreur_connexion'])) {
             echo '<p style="color: red;">' . $_SESSION['erreur_connexion'] . '</p>';
             unset($_SESSION['erreur_connexion']);
-        }
+        }*/
         ?>
 
         <form id="login-form" action="index.php?controller=connexion&action=connect" method="post">

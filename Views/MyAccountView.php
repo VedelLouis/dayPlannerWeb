@@ -8,20 +8,23 @@
     <title>Modifier mon compte</title>
 </head>
 <body>
-
+<?php
+use Repositories\UserRepository;
+$connectedUser = UserRepository::getConnectedUser();
+?>
 <div class="container">
     <div class="create-container">
         <h2>Modifier mon compte</h2>
 
         <form id="edit-form" action="index.php?controller=account&action=edit" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="login" value="<?php echo $_SESSION['login']; ?>">
+                <input type="text" class="form-control" name="login" value="<?php echo $connectedUser->getLogin(); ?>">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="firstname" value="<?php echo $_SESSION['firstname']; ?>">
+                <input type="text" class="form-control" name="firstname" value="<?php echo $connectedUser->getFirstName(); ?>">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="lastname" value="<?php echo $_SESSION['lastname']; ?>">
+                <input type="text" class="form-control" name="lastname" value="<?php echo $connectedUser->getLastName(); ?>">
             </div>
 
             <div class="form-group">

@@ -37,23 +37,6 @@ class User {
     public function getLastName() {
         return $this->lastName;
     }
-
-    // Setters
-    public function setLogin($login) {
-        $this->login = $login;
-    }
-
-    public function setPassword($password) {
-        $this->password = $password;
-    }
-
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
-    }
-
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
-    }
 }
 
 ?>

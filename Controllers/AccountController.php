@@ -8,9 +8,6 @@ class AccountController
 {
     public function __construct($action)
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
         switch ($action) {
             case "index":
                 $this->afficherCreateView();
