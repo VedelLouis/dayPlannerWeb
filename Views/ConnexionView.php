@@ -14,13 +14,6 @@
         <img src="Images/dayPlannerLogo.png" alt="DayPlanner Logo" class="logo">
         <h2>Connexion au site</h2>
 
-        <?php
-      /*  if (isset($_SESSION['erreur_connexion'])) {
-            echo '<p style="color: red;">' . $_SESSION['erreur_connexion'] . '</p>';
-            unset($_SESSION['erreur_connexion']);
-        }*/
-        ?>
-
         <form id="login-form" action="index.php?controller=connexion&action=connect" method="post">
         <div class="form-group">
                 <input type="text" class="form-control" name="login" placeholder="Login" required>
@@ -28,6 +21,11 @@
             <div class="form-group">
                 <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
             </div>
+            <?php
+            if (isset($erreur_connexion)) {
+                echo '<div class="error-message">' . $erreur_connexion . '</div>';
+            }
+            ?>
             <button type="submit" class="btn btn-success btn-block">Se connecter</button>
         </form>
 

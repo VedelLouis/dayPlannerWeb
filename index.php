@@ -22,6 +22,7 @@
     error_reporting(E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR);
     date_default_timezone_set('Europe/Paris');
 
+    setcookie('idUser', '1234');
     function loadClasses($classe)
     {
         $cls = str_replace('\\', DIRECTORY_SEPARATOR, $classe);

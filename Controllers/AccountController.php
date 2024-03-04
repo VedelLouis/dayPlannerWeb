@@ -54,7 +54,6 @@ class AccountController
 
     private function modifierMonCompte()
     {
-        $idUser = $_SESSION['idUser'];
         $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);
         $mdpActuel = filter_input(INPUT_POST, 'mdpActuel', FILTER_SANITIZE_STRING);
         $nouveauMdp = filter_input(INPUT_POST, 'nouveauMdp', FILTER_SANITIZE_STRING);
@@ -63,40 +62,35 @@ class AccountController
 
         require_once "Repositories/UserRepository.php";
 
-        $userData = UserRepository::getUserById($idUser);
+        $result = UserRepository::updateUser($login, $mdpActuel, $nouveauMdp, $firstname, $lastname);
 
-        if (!password_verify($mdpActuel, $userData->getPassword())) {
-            $_SESSION['error_message'] = "Mot de passe actuel incorrect.";
+        if ($result == 0) {
+            $erreur_modification = "Mot de passe incorrect";
+            include "Views/MyAccountView.php";
+            exit;
+        } else {
+            $modification = "Compte modifié avec succès";
+            include "Views/MyAccountView.php";
             header("Location: index.php?controller=account&action=account");
-            exit();
         }
-
-        UserRepository::updateUser($idUser, $login, $nouveauMdp, $firstname, $lastname);
-
-        header("Location: index.php?controller=account&action=account");
     }
-
 
     private function supprimerMonCompte()
     {
-        $idUser = $_SESSION['idUser'];
         $confirmDeletePassword = filter_input(INPUT_POST, 'confirmDeletePassword', FILTER_SANITIZE_STRING);
 
         require_once "Repositories/UserRepository.php";
 
-        $userData = UserRepository::getUserById($idUser);
+        $result = UserRepository::deleteUser($confirmDeletePassword);
 
-        echo $userData->getPassword();
-
-        if (!password_verify($confirmDeletePassword, $userData->getPassword())) {
-            $_SESSION['error_message'] = "Le mot de passe ne correspond pas.";
-            header("Location: index.php?controller=account&action=account");
-            exit();
+        if ($result == 0) {
+            $erreur_suppression = "Mot de passe incorrect";
+            include "Views/MyAccountView.php";
+            exit;
+        } else {
+            header("Location: index.php?controller=connexion&action=index");
+            exit;
         }
-
-        UserRepository::deleteUser($idUser);
-        header("Location: index.php?controller=connexion&action=index");
     }
-
 
 }

@@ -7,14 +7,16 @@ class User {
     private $password;
     private $firstName;
     private $lastName;
+    private $session;
 
     // Constructeur
-    public function __construct($idUser, $login, $password, $firstName, $lastName) {
+    public function __construct($idUser, $login, $password, $firstName, $lastName, $session) {
         $this->idUser = $idUser;
         $this->login = $login;
         $this->password = $password;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->session = $session;
     }
 
     // Getters
@@ -36,6 +38,10 @@ class User {
 
     public function getLastName() {
         return $this->lastName;
+    }
+
+    public function getSession() {
+        return $this->session;
     }
 }
 

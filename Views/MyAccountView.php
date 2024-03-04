@@ -26,27 +26,31 @@ $connectedUser = UserRepository::getConnectedUser();
             <div class="form-group">
                 <input type="text" class="form-control" name="lastname" value="<?php echo $connectedUser->getLastName(); ?>">
             </div>
-
-            <div class="form-group">
-                <input type="password" class="form-control" name="mdpActuel" placeholder="Mot de passe actuel" required>
-            </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="nouveauMdp" placeholder="Nouveau mot de passe"
-                       oninput="checkPassword()" required>
+                       oninput="checkPassword()">
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="confirmationMdp"
-                       placeholder="Confirmer le nouveau mot de passe" oninput="checkPassword()" required>
+                       placeholder="Confirmer le nouveau mot de passe" oninput="checkPassword()">
                 <span id="passwordError" class="error-message"></span>
-                <?php
-                if (isset($_SESSION['error_message'])) {
-                    echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
-                    unset($_SESSION['error_message']);
-                }
-                ?>
             </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="mdpActuel" placeholder="Mot de passe actuel" required>
+            </div>
+            <?php
+            if (isset($erreur_modification)) {
+                echo '<div class="error-message">' . $erreur_modification . '</div>';
+            }
+            ?>
             <button type="submit" class="btn btn-update btn-block" id="submitBtn" disabled>Modifier mon compte</button>
         </form>
+
+        <?php
+        if (isset($modification)) {
+            echo '<div class="success-message">' . $modification . '</div>';
+        }
+        ?>
 
         <form id="back-form" action="index.php?controller=accueil&action=index" method="post">
             <button type="submit" class="btn btn-back btn-block">Retour</button>
@@ -57,12 +61,17 @@ $connectedUser = UserRepository::getConnectedUser();
         </button>
 
         <form id="delete-form" action="index.php?controller=account&action=delete" method="post">
-            <div id="confirmationPopup" class="popup">
+            <div id="confirmationPopup" class="popup" <?php if(isset($erreur_suppression)) echo 'style="display: block;"'; ?>>
                 <p>Voulez-vous vraiment supprimer votre compte?</p>
                 <div class="form-group">
                     <input type="password" class="form-control" name="confirmDeletePassword" placeholder="Mot de passe"
                            required>
                 </div>
+                <?php
+                if (isset($erreur_suppression)) {
+                    echo '<div class="error-message">' . $erreur_suppression . '</div>';
+                }
+                ?>
                 <button type="submit" class="btn btn-danger btn-block" onclick="deleteAccount()" id="submitDeleteBtn">Oui, supprimer</button>
                 <button type="button" class="btn btn-cancel btn-block" onclick="hideConfirmationPopup()">Annuler
                 </button>
@@ -121,7 +130,6 @@ $connectedUser = UserRepository::getConnectedUser();
         var submitDeleteBtn = document.getElementById('submitDeleteBtn');
         var errorSpan = document.getElementById('deletePasswordError');
         var confirmDeletePasswordInput = document.getElementsByName('confirmDeletePassword')[0];
-
         confirmDeletePasswordInput.value = "";
         errorSpan.innerHTML = "";
     }
@@ -134,6 +142,13 @@ $connectedUser = UserRepository::getConnectedUser();
             errorSpan.innerHTML = "Veuillez saisir votre mot de passe pour confirmer la suppression du compte.";
         }
     }
+
+    <?php if(isset($erreur_suppression)) : ?>
+    window.onload = function() {
+        showConfirmationPopup();
+    };
+    <?php endif; ?>
+
 </script>
 
 </body>

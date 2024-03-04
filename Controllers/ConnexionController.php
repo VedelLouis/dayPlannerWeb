@@ -34,12 +34,13 @@ class ConnexionController
 
         require_once "Repositories/UserRepository.php";
 
-        $user = UserRepository::getUser($login, $password);
+        $result = UserRepository::getUser($login, $password);
 
-        if ($user) {
-            header("Location: index.php?controller=accueil&action=index");
+        if ($result == 0) {
+            $erreur_connexion = "Identifiants de connexion incorrects";
+            include "Views/ConnexionView.php";
         } else {
-            header("Location: index.php?controller=connexion&action=index");
+            header("Location: index.php?controller=accueil&action=index");
         }
     }
 
@@ -47,6 +48,7 @@ class ConnexionController
     private function deconnecter()
     {
         UserRepository::deconnectUser();
+        setcookie("PHPSESSID", "", time()-3600, "/");
         header('Location: index.php');
     }
 }
