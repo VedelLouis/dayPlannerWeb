@@ -15,7 +15,12 @@
         <h2>Connexion au site</h2>
 
         <form id="login-form" action="index.php?controller=connexion&action=connect" method="post">
-        <div class="form-group">
+            <?php
+            if (isset($erreur_session)) {
+                echo '<div class="error-message">' . $erreur_session . '</div>';
+            }
+            ?>
+            <div class="form-group">
                 <input type="text" class="form-control" name="login" placeholder="Login" required>
             </div>
             <div class="form-group">
@@ -30,7 +35,7 @@
         </form>
 
         <form id="login-form" action="index.php?controller=account&action=index" method="post">
-            <button type="submit" class="btn btn-create btn-block" >Créer un compte</button>
+            <button type="submit" class="btn btn-create btn-block">Créer un compte</button>
         </form>
 
     </div>

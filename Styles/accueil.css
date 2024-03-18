@@ -1,4 +1,5 @@
 .date-container {
+    position: sticky;
     margin-top: 50px;
     margin-bottom: 100px;
     text-align: center;
@@ -18,28 +19,31 @@
     border: 2px solid #a163f5;
 }
 
-.heureLigneActuelle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    font-size: 15px;
-}
-
 .heureLigne {
     font-size: 20px;
-    margin-bottom: 30px;
+    padding: 0;
+    margin: 0;
+
+    border-top: 2px solid #878787;
+    height: 90px;
 }
 
-.colHeureActuelle {
-    margin-left: 4px;
+.tableauHeure {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid #878787;
+    position: relative;
+    overflow: hidden;
 }
 
-.colLigneActuelle {
-    margin-right: -23px;
-    margin-left: 4px;
+.heureLigneActuelle {
+    color: red;
+    position: absolute;
+    margin-right: 50px;
+}
+
+.ligneHeureActuelle {
+    border: 1px solid red;
 }
 
 #dateForm {
@@ -85,4 +89,76 @@
 
 .btn-jour:hover {
     border: 2px solid black;
+}
+
+.calendar h1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.eventButton {
+    margin-bottom: 20px;
+    height: 40px;
+    background: linear-gradient(to right, #a163f5, #d7a0de);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.eventButton .bi {
+    margin-left: 7px;
+}
+
+.eventButton:hover {
+    background: linear-gradient(to right, #7a3fba, #b679c7);
+    color: white;
+}
+
+.saveButton {
+    background: linear-gradient(to right, #a163f5, #d7a0de);
+    color: #fff;
+}
+
+.saveButton:hover {
+    background: linear-gradient(to right, #7a3fba, #b679c7);
+    color: white;
+}
+
+.event {
+    position: absolute;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nameEvent {
+    font-size: 22px;
+    margin: 0;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 30px;
+    color: white;
+}
+
+#eventColor {
+    height: 50px;
+}
+
+.timeStart {
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+
+.timeEnd {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
 }

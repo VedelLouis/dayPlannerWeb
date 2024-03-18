@@ -218,15 +218,40 @@ class UserRepository
         }
     }
 
-    public static function deconnectUser()
-    {
+    public static function deconnectUser() {
+        $session_id = $_COOKIE['PHPSESSID'];
         $url = "https://dayplanner.tech/api/?controller=connexion&action=deconnect";
-        $ch = curl_init($url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$session_id"));
         curl_exec($ch);
         curl_close($ch);
+    }
+
+    public static function session()
+    {
+        $session_id = $_COOKIE['PHPSESSID'];
+        $url = "https://dayplanner.tech/api/?controller=connexion&action=session";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$session_id"));
+        $data = curl_exec($ch);
+
+        if ($data === false) {
+            die(curl_error($ch));
+        }
+
+        curl_close($ch);
+
+        $response = json_decode($data, true);
+
+        if ($response['success'] == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }

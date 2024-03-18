@@ -44,12 +44,24 @@ class ConnexionController
         }
     }
 
-
     private function deconnecter()
     {
         UserRepository::deconnectUser();
         setcookie("PHPSESSID", "", time()-3600, "/");
         header('Location: index.php');
+    }
+
+    private function session()
+    {
+        require_once "Repositories/UserRepository.php";
+
+        $result = UserRepository::session();
+
+        if ($result == 0) {
+            $erreur_session = "Votre session a expiré, veuillez vous reconnecter";
+            include "Views/ConnexionView.php";
+
+        }
     }
 }
 ?>
