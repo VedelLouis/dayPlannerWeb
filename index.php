@@ -73,7 +73,20 @@
             }
             $c = new \Controllers\EventController($action);
             break;
-
+        case "task":
+            $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
+            if (!$action) {
+                $action = "index";
+            }
+            $c = new \Controllers\TaskController($action);
+            break;
+        case "note":
+            $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
+            if (!$action) {
+                $action = "index";
+            }
+            $c = new \Controllers\NoteController($action);
+            break;
     }
 
     ?>

@@ -1,5 +1,4 @@
 .date-container {
-    position: sticky;
     margin-top: 50px;
     margin-bottom: 100px;
     text-align: center;
@@ -93,8 +92,9 @@
 
 .calendar h1 {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 40px;
+    font-size: 60px;
 }
 
 .eventButton {
@@ -119,12 +119,18 @@
     color: white;
 }
 
-.saveButton {
+.saveButton,
+.cancelButtonNote,
+.saveButtonNote {
     background: linear-gradient(to right, #a163f5, #d7a0de);
     color: #fff;
+    border: none;
+    border-radius: 3px;
 }
 
-.saveButton:hover {
+.saveButton:hover,
+.cancelButtonNote:hover,
+.saveButtonNote:hover {
     background: linear-gradient(to right, #7a3fba, #b679c7);
     color: white;
 }
@@ -161,4 +167,50 @@
     position: absolute;
     right: 5px;
     bottom: 0;
+}
+
+.priorities,
+.tasks,
+.notes {
+    margin-bottom: 20px;
+}
+
+.priorities h2,
+.tasks h2,
+.notes h2 {
+    font-size: 40px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid red;
+}
+
+.tasks h2,
+.notes h2 {
+    border-image: linear-gradient(to right, #a163f5, #d7a0de) 1;
+}
+
+.addTask,
+.addPriority {
+    background: linear-gradient(to right, #a163f5, #d7a0de);
+    color: #fff;
+    border: none;
+}
+
+.addTask:hover,
+.addPriority:hover {
+    background: linear-gradient(to right, #7a3fba, #b679c7);
+    color: #fff;
+}
+
+.newTask {
+    align-items: center;
+}
+
+#textNew {
+    margin-top: 10px;
+    height: 90%;
+}
+
+.listPriorities, .listTasks {
+    margin: 0;
+    padding: 0;
 }
