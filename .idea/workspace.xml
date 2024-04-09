@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="tasks good">
+    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="extend events meh">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/accueil.css" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/accueil.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/AccueilView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/AccueilView.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +153,8 @@
       <workItem from="1712339869261" duration="1957000" />
       <workItem from="1712485560228" duration="707000" />
       <workItem from="1712561397116" duration="18697000" />
-      <workItem from="1712600902397" duration="4006000" />
+      <workItem from="1712600902397" duration="4061000" />
+      <workItem from="1712649701688" duration="4492000" />
     </task>
     <task id="LOCAL-00001" summary="10/01">
       <option name="closed" value="true" />
@@ -258,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712139029766</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="extend events meh">
+      <option name="closed" value="true" />
+      <created>1712604984165</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1712604984165</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,7 +288,8 @@
     <MESSAGE value="04/03" />
     <MESSAGE value="Event create update delete" />
     <MESSAGE value="tasks good" />
-    <option name="LAST_COMMIT_MESSAGE" value="tasks good" />
+    <MESSAGE value="extend events meh" />
+    <option name="LAST_COMMIT_MESSAGE" value="extend events meh" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

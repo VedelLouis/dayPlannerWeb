@@ -214,3 +214,27 @@
     margin: 0;
     padding: 0;
 }
+
+.resizerBottom {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 5px solid #b679c7;
+    border-radius: 30px;
+    cursor: s-resize;
+}
+
+.resizerTop {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 5px solid #b679c7;
+    border-radius: 30px;
+    cursor: s-resize;
+}

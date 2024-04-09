@@ -603,8 +603,15 @@ if ($date == NULL || $date == date('Y-m-d')) {
                     eventElement.style.left = orderEventSameTime * order + '%';
                 }
 
-                eventElement.style.resize = "vertical";
-                eventElement.style.overflow = "auto";
+                var resizerBottomElement = document.createElement('div');
+                resizerBottomElement.classList.add('resizerBottom');
+                resizerBottomElement.setAttribute("id", "resizerBottom");
+                eventElement.appendChild(resizerBottomElement);
+
+                var resizerTopElement = document.createElement('div');
+                resizerTopElement.classList.add('resizerTop');
+                resizerTopElement.setAttribute("id", "resizerTop");
+                eventElement.appendChild(resizerTopElement);
 
                 var timeStartElement = document.createElement('div');
                 timeStartElement.classList.add('timeStart');
@@ -714,19 +721,44 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.send(new URLSearchParams(formData));
 
+                var timeStartElement = eventElement.querySelector('.timeStart');
+                timeStartElement.textContent = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
+
                 var timeEndElement = eventElement.querySelector('.timeEnd');
                 timeEndElement.textContent = endHour + ":" + endMinute.toString().padStart(2, '0');
             }
 
             document.addEventListener('DOMContentLoaded', function () {
-                document.querySelectorAll('.event').forEach(function (eventElement) {
-                    eventElement.addEventListener('click', function (event) {
+                document.querySelectorAll('.event .resizerTop, .event .resizerBottom').forEach(function (resizerElement) {
+                    resizerElement.addEventListener('mousedown', function (event) {
+                        event.preventDefault();
+                        var eventElement = resizerElement.parentNode;
+                        var initialHeight = eventElement.offsetHeight;
+                        var startY = event.clientY;
                         var eventId = eventElement.id;
-                        calculateEventTime(eventId);
+                        var startMarginTop = parseInt(eventElement.style.marginTop) || 0;
+
+                        document.addEventListener('mousemove', resizeEvent);
+                        document.addEventListener('mouseup', stopResizeEvent);
+
+                        function resizeEvent(event) {
+                            var deltaY = event.clientY - startY;
+                            if (resizerElement.classList.contains('resizerTop')) {
+                                eventElement.style.height = initialHeight - deltaY + 'px';
+                                eventElement.style.marginTop = startMarginTop + deltaY + 'px';
+                            } else {
+                                eventElement.style.height = initialHeight + deltaY + 'px';
+                            }
+                        }
+
+                        function stopResizeEvent() {
+                            document.removeEventListener('mousemove', resizeEvent);
+                            document.removeEventListener('mouseup', stopResizeEvent);
+                            calculateEventTime(eventId);
+                        }
                     });
                 });
             });
-
 
             var documentConfig = {attributes: true, subtree: true};
             documentObserver.observe(document.documentElement, documentConfig);
