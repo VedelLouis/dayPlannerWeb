@@ -48,3 +48,15 @@ body {
     margin-left: -25px;
     width: 75px;
 }
+
+.navbar {
+    display: flex;
+    background-color: #fff;
+    justify-content: space-around;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding-top: 10px;
+}

@@ -89,8 +89,18 @@
                 <label class="form-check-label">${nouvelleTacheTexte}</label>
             </div>
             <input value="" type="hidden" id="hiddenTaskId"/>
-            <button type="button" class="btn btn-light btn-sm" onclick="deleteTask(this.parentNode, document.getElementById('hiddenTaskId').getAttribute('value'))">
-<i class="bi bi-x-lg"></i></button>
+
+            <div class="container-buttons">
+                <button type="button" class="btn btn-light btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#modalDelayTask">
+                    <i class="bi bi-calendar-date"></i>
+                </button>
+
+                <button type="button" class="btn btn-light btn-sm"
+                    onclick="deleteTask(this.parentNode, document.getElementById('hiddenTaskId').getAttribute('value'))">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
         </div>
     `;
 
@@ -106,7 +116,8 @@
             list.appendChild(nouvelleTache);
         }
 
-        function deleteTask(taskElement, taskId) {
+        function deleteTask(buttonElement, taskId) {
+            var taskElement = buttonElement.parentNode.parentNode;
             taskElement.remove();
 
             var formData = new FormData();
@@ -118,8 +129,73 @@
             xhr.send(new URLSearchParams(formData));
         }
 
-    </script>
+        function delayTask(buttonElement, taskId, date) {
+            var taskElement = buttonElement.parentNode.parentNode;
+            taskElement.remove();
 
+            var formData = new FormData();
+            formData.append('idTask', taskId);
+            formData.append('date', date);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=delay", true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(new URLSearchParams(formData));
+        }
+
+        function validateEventDuration() {
+            var startTime = document.getElementById('startTime').value;
+            var endTime = document.getElementById('endTime').value;
+
+            var start = new Date("01/01/2024 " + startTime);
+            var end = new Date("01/01/2024 " + endTime);
+
+            var diff = (end - start) / 1000 / 60;
+
+            if (diff < 30) {
+                alert("La durée minimale d'un événement est de 30 minutes.");
+                return false;
+            } else {
+                return true
+            }
+        }
+
+        function validateEventSameTime() {
+            return new Promise((resolve, reject) => {
+                var date = document.getElementById('eventDate').value;
+                var startTime = document.getElementById('startTime').value;
+                var endTime = document.getElementById('endTime').value;
+
+                var dateStart = date + ' ' + startTime;
+                var dateEnd = date + ' ' + endTime;
+
+                var formData = new FormData();
+                formData.append('dateStart', dateStart);
+                formData.append('dateEnd', dateEnd);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=sameTime", true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(new URLSearchParams(formData));
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        var isEventSameTime = jsonResponse.success;
+                        if (isEventSameTime > 0) {
+                            alert('Il y a déjà un autre évènement en cours sur ces horaires.');
+                            resolve(false);
+                        } else {
+                            resolve(true);
+                        }
+                    } else {
+                        resolve(false);
+                    }
+                };
+            });
+        }
+
+    </script>
 </head>
 <body>
 <?php
@@ -169,7 +245,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
 <div class="date-container">
     <div class="row">
         <div class="col-auto  flechel d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangePrevious('<?php echo $previousDate ?>');" class="btn btn-light">
+            <button type="button" onclick="onDateChangePrevious('<?php echo $previousDate ?>');" class="btn btn-light btnCaret">
                 <i class="bi bi-caret-left fs-2"></i></button>
         </div>
 
@@ -230,7 +306,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
         </div>
 
         <div class="col-auto flecher d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light"><i
+            <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light btnCaret"><i
                         class="bi bi-caret-right fs-2"></i></button>
 
         </div>
@@ -271,7 +347,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             </div>
                         </div>
                         <div class="modal-body">
-                            <form action="index.php?controller=event&action=create" method="post">
+                            <form action="index.php?controller=event&action=create" method="post"
+                                  onsubmit="return validateEventDuration() && validateEventSameTime()"
+                                  id="createEventForm">
                                 <div class="mb-3">
                                     <label for="eventName" class="form-label">Nom de l'événement</label>
                                     <input type="text" class="form-control" id="eventName" name="eventName" required>
@@ -323,7 +401,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             </div>
                         </div>
                         <div class="modal-body">
-                            <form action="index.php?controller=event&action=update" method="post">
+                            <form action="index.php?controller=event&action=update" method="post"
+                                  onsubmit="return validateEventDuration() && validateEventSameTime()"
+                                  id="updateEventForm">
                                 <input type="hidden" id="updateEventId" name="updateEventId">
                                 <div class="mb-3">
                                     <label for="updateEventName" class="form-label">Nom de l'événement</label>
@@ -362,6 +442,37 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                 <input type="hidden" id="deleteEventDate" name="deleteEventDate">
                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalDelayTask">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="container headerModalTask">
+                                <div class="row">
+                                    <div class="col">
+                                        <h1 class="modal-title fs-5" id="titleModal">Renvoyer la tâche sur un autre jour</h1>
+                                    </div>
+                                    <div class="col text-end">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="datePickerTask">
+                                <label>Nouvelle date :</label>
+                                <input type="date" id="dateModalDelay" name="dateModalDelay">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="taskIdDelay" name="taskIdDelay">
+                            <button type="submit" class="btn saveButton"
+                                    onclick="delayTask(this.parentNode.parentNode, document.getElementById('taskIdDelay').value, document.getElementById('dateModalDelay').value, )">Enregistrer</button>
                         </div>
                     </div>
                 </div>
@@ -421,29 +532,37 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 <div class="row priorities">
                     <div class="col">
                         <h2>Mes priorités</h2>
-                        <div class="container listPriorities">
-                            <?php foreach ($tasks as $task) { ?>
-                                <?php if ($task->getPriority() == 1) { ?>
-                                    <div class="d-flex justify-content-between" id="task">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkboxPriorities" name="checkboxPriorities"
-                                                   class="form-check-input"
-                                                   onchange="checkTaskDone(<?php echo $task->getIdTask(); ?>, this.checked)"
-                                                <?php if ($task->getDone() == 1) {
-                                                    echo "checked";
-                                                } ?> />
-                                            <label for="priorities"
-                                                   class="form-check-label"><?php echo $task->getTitle(); ?></label>
+                        <div class="container listPriorities" ondrop="drop(event, 1)" ondragover="allowDrop(event)">
+                            <div class="priority-list">
+                                <?php foreach ($tasks as $task) { ?>
+                                    <?php if ($task->getPriority() == 1) { ?>
+                                        <div class="d-flex justify-content-between task" draggable="true"
+                                             id="<?php echo $task->getIdTask(); ?>" ondragstart="drag(event)">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="checkboxPriorities" name="checkboxPriorities"
+                                                       class="form-check-input"
+                                                       onchange="checkTaskDone(<?php echo $task->getIdTask(); ?>, this.checked)"
+                                                    <?php if ($task->getDone() == 1) {
+                                                        echo "checked";
+                                                    } ?> />
+                                                <label for="priorities"
+                                                       class="form-check-label"><?php echo $task->getTitle(); ?></label>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <button type="button" class="btn btn-light btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#modalDelayTask"
+                                                        onclick="setTaskIdDelay(<?php echo $task->getIdTask(); ?>)">
+                                                    <i class="bi bi-calendar-date"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-light btn-sm"
+                                                        onclick="deleteTask(this.parentNode.parentNode, <?php echo $task->getIdTask(); ?>)">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="ml-auto">
-                                            <button type="button" class="btn btn-light btn-sm"
-                                                    onclick="deleteTask(this.parentNode.parentNode, <?php echo $task->getIdTask(); ?>)">
-                                                <i class="bi bi-x-lg"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php } ?>
                                 <?php } ?>
-                            <?php } ?>
+                            </div>
                         </div>
                         <div class="row newTask mt-2">
                             <div class="col">
@@ -463,29 +582,37 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 <div class="row tasks mt-4">
                     <div class="col">
                         <h2>Mes tâches à faire</h2>
-                        <div class="container listTasks">
-                            <?php foreach ($tasks as $task) { ?>
-                                <?php if ($task->getPriority() == 0) { ?>
-                                    <div class="d-flex justify-content-between" id="task">
-                                        <div class="form-check">
-                                            <input type="checkbox" id="checkboxTasks" name="checkboxTasks"
-                                                   class="form-check-input"
-                                                   onchange="checkTaskDone(<?php echo $task->getIdTask(); ?>, this.checked)"
-                                                <?php if ($task->getDone() == 1) {
-                                                    echo "checked";
-                                                } ?> />
-                                            <label for="tasks"
-                                                   class="form-check-label"><?php echo $task->getTitle(); ?></label>
+                        <div class="container listTasks" ondrop="drop(event, 0)" ondragover="allowDrop(event)">
+                            <div class="task-list">
+                                <?php foreach ($tasks as $task) { ?>
+                                    <?php if ($task->getPriority() == 0) { ?>
+                                        <div class="d-flex justify-content-between task" draggable="true"
+                                             id="<?php echo $task->getIdTask(); ?>" ondragstart="drag(event)">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="checkboxTasks" name="checkboxTasks"
+                                                       class="form-check-input"
+                                                       onchange="checkTaskDone(<?php echo $task->getIdTask(); ?>, this.checked)"
+                                                    <?php if ($task->getDone() == 1) {
+                                                        echo "checked";
+                                                    } ?> />
+                                                <label for="tasks"
+                                                       class="form-check-label"><?php echo $task->getTitle(); ?></label>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <button type="button" class="btn btn-light btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#modalDelayTask"
+                                                        onclick="setTaskIdDelay(<?php echo $task->getIdTask(); ?>)">
+                                                    <i class="bi bi-calendar-date"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-light btn-sm"
+                                                        onclick="deleteTask(this.parentNode.parentNode, <?php echo $task->getIdTask(); ?>)">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="ml-auto">
-                                            <button type="button" class="btn btn-light btn-sm"
-                                                    onclick="deleteTask(this.parentNode.parentNode, <?php echo $task->getIdTask(); ?>)">
-                                                <i class="bi bi-x-lg"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <?php } ?>
                                 <?php } ?>
-                            <?php } ?>
+                            </div>
                         </div>
                         <div class="row newTask mt-2">
                             <div class="col">
@@ -515,8 +642,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                               ?>">
                             <textarea id="textAreaNote" rows="10" cols="50" name="notes"
                                       form="notesForm"><?php echo htmlspecialchars($noteText); ?></textarea>
-                            <button class="saveButtonNote" type="submit"
-                            ">Enregistrer</button>
+                            <button class="saveButtonNote" type="submit">Enregistrer</button>
                             <button class="cancelButtonNote" type="button" onclick="cancelNote()">Annuler</button>
                             <input type="hidden" name="dateNote" value="<?php echo $date; ?>">
                         </form>
@@ -576,7 +702,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
         <script>
 
-            function createEvents(id, color, dateStart, dateEnd, name, eventInSameTime, order) {
+            function createEvents(id, color, dateStart, dateEnd, name) {
                 var eventId = "event_" + id;
 
                 var startTime = new Date(dateStart);
@@ -594,14 +720,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 eventElement.style.marginTop = start + 'px';
                 eventElement.style.height = duration + 'px';
                 eventElement.style.backgroundColor = color + '30';
-
-                if (eventInSameTime === 1) {
-                    eventElement.style.width = 100 + '%';
-                } else {
-                    eventElement.style.width = 100 / eventInSameTime + '%';
-                    var orderEventSameTime = 100 / eventInSameTime;
-                    eventElement.style.left = orderEventSameTime * order + '%';
-                }
 
                 var resizerBottomElement = document.createElement('div');
                 resizerBottomElement.classList.add('resizerBottom');
@@ -643,41 +761,17 @@ if ($date == NULL || $date == date('Y-m-d')) {
             echo $events;
 
             if ($events) {
-            $eventRanges = array();
 
             foreach ($events as $event) {
-                $dateStart = strtotime($event->getDateStart());
-                $dateEnd = strtotime($event->getDateEnd());
 
-                $eventRanges[] = array(
-                    'start' => $dateStart,
-                    'end' => $dateEnd,
-                    'event' => $event
-                );
-            }
-
-            usort($eventRanges, function ($a, $b) {
-                return $a['start'] - $b['start'];
-            });
-
-            foreach ($eventRanges as $key => $eventRange) {
-            $overlapCount = 0;
-
-            foreach ($eventRanges as $otherKey => $otherRange) {
-                if ($eventRange['start'] < $otherRange['end'] && $eventRange['end'] > $otherRange['start']) {
-                    $overlapCount++;
-                }
-            }
             ?>
 
             createEvents(
-                '<?php echo $eventRange['event']->getIdEvent() ?>',
-                '<?php echo $eventRange['event']->getColor() ?>',
-                '<?php echo $eventRange['event']->getDateStart() ?>',
-                '<?php echo $eventRange['event']->getDateEnd() ?>',
-                '<?php echo $eventRange['event']->getName() ?>',
-                <?php echo $overlapCount ?>,
-                <?php echo $key  ?>
+                '<?php echo $event->getIdEvent() ?>',
+                '<?php echo $event->getColor() ?>',
+                '<?php echo $event->getDateStart() ?>',
+                '<?php echo $event->getDateEnd() ?>',
+                '<?php echo $event->getName() ?>',
             );
 
             <?php
@@ -690,22 +784,24 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 var marginTopPixels = eventElement.offsetTop;
                 var heightPixels = eventElement.offsetHeight;
 
-                // Convertir la marge supérieure en minutes
                 var startMinute = marginTopPixels / 1.5;
-
-                // Convertir la hauteur en pixels en heures
                 var durationHour = heightPixels / 90;
 
-                // Calculer l'heure de début
                 var startHour = Math.floor(startMinute / 60);
                 var startMinuteRemainder = Math.floor(startMinute % 60);
 
-                // Calculer l'heure de fin
                 var endMinute = startMinute + (durationHour * 60);
                 var endHour = Math.floor(endMinute / 60);
                 endMinute = Math.floor(endMinute % 60);
-                var startDate = new Date(<?php echo json_encode($dateActuelle); ?> +" " + startHour + ":" + startMinuteRemainder);
-                var endDate = new Date(<?php echo json_encode($dateActuelle); ?> +" " + endHour + ":" + endMinute);
+
+                var startTimeFormatted = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
+                var endTimeFormatted = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
+
+                document.getElementById('updateEventTimeStart').value = startTimeFormatted;
+                document.getElementById('updateEventTimeEnd').value = endTimeFormatted;
+
+                var startDate = new Date(<?php echo json_encode($date); ?> +" " + startHour + ":" + startMinuteRemainder);
+                var endDate = new Date(<?php echo json_encode($date); ?> +" " + endHour + ":" + endMinute);
                 startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
                 endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
                 var formattedStartDate = startDate.toISOString().slice(0, 16).replace('T', ' ');
@@ -725,10 +821,38 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 timeStartElement.textContent = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
 
                 var timeEndElement = eventElement.querySelector('.timeEnd');
-                timeEndElement.textContent = endHour + ":" + endMinute.toString().padStart(2, '0');
+                if (endHour === 24) {
+                    endHour = 0;
+                }
+                timeEndElement.textContent = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
+
             }
 
+            // Mettre à jour l'heure de début et de fin du modal de modification de l'event
+            document.querySelectorAll('.event').forEach(function(eventElement) {
+                eventElement.addEventListener('click', function() {
+                    document.getElementById('updateEventId').value = eventElement.id;
+                    calculateEventTime(eventElement.id);
+                });
+            });
+
             document.addEventListener('DOMContentLoaded', function () {
+                // Fonction pour empecher le drag et le redimensionnement des évènements en même temps
+                function isOverlapping(testElement) {
+                    var testRect = testElement.getBoundingClientRect();
+                    var allEvents = document.querySelectorAll('.event');
+                    for (var i = 0; i < allEvents.length; i++) {
+                        if (allEvents[i] === testElement) continue;
+                        var compRect = allEvents[i].getBoundingClientRect();
+                        if (testRect.bottom > compRect.top && testRect.top < compRect.bottom &&
+                            testRect.right > compRect.left && testRect.left < compRect.right) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                // Redimensionnement des évènements
                 document.querySelectorAll('.event .resizerTop, .event .resizerBottom').forEach(function (resizerElement) {
                     resizerElement.addEventListener('mousedown', function (event) {
                         event.preventDefault();
@@ -737,39 +861,110 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         var startY = event.clientY;
                         var eventId = eventElement.id;
                         var startMarginTop = parseInt(eventElement.style.marginTop) || 0;
+                        var parentElement = eventElement.parentNode;
+                        var parentRect = parentElement.getBoundingClientRect();
 
                         document.addEventListener('mousemove', resizeEvent);
                         document.addEventListener('mouseup', stopResizeEvent);
 
                         function resizeEvent(event) {
                             var deltaY = event.clientY - startY;
+                            var newHeight, newMarginTop;
+
                             if (resizerElement.classList.contains('resizerTop')) {
-                                eventElement.style.height = initialHeight - deltaY + 'px';
-                                eventElement.style.marginTop = startMarginTop + deltaY + 'px';
+                                newHeight = initialHeight - deltaY;
+                                newMarginTop = startMarginTop + deltaY;
+
+                                newHeight = Math.max(45, newHeight);
+                                newHeight = Math.min(newHeight, initialHeight + startMarginTop);
+                                newMarginTop = Math.max(0, newMarginTop);
+
+                                eventElement.style.height = newHeight + 'px';
+                                eventElement.style.marginTop = newMarginTop + 'px';
                             } else {
-                                eventElement.style.height = initialHeight + deltaY + 'px';
+                                newHeight = initialHeight + deltaY;
+                                newHeight = Math.max(45, newHeight);
+                                newHeight = Math.min(newHeight, parentRect.height - startMarginTop);
+
+                                eventElement.style.height = newHeight + 'px';
+                            }
+
+                            if (isOverlapping(eventElement)) {
+                                if (resizerElement.classList.contains('resizerTop')) {
+                                    while (isOverlapping(eventElement) && newHeight > 45) {
+                                        newHeight--;
+                                        newMarginTop++;
+                                        eventElement.style.height = newHeight + 'px';
+                                        eventElement.style.marginTop = newMarginTop + 'px';
+                                        if (newMarginTop >= parentRect.height - 45) break;
+                                    }
+                                } else {
+                                    while (isOverlapping(eventElement) && newHeight > 45) {
+                                        newHeight--;
+                                        eventElement.style.height = newHeight + 'px';
+                                    }
+                                }
                             }
                         }
 
                         function stopResizeEvent() {
                             document.removeEventListener('mousemove', resizeEvent);
                             document.removeEventListener('mouseup', stopResizeEvent);
-                            calculateEventTime(eventId);
+                            if (!isOverlapping(eventElement)) {
+                                calculateEventTime(eventId);
+                            }
+                        }
+                    });
+                });
+
+                var events = document.querySelectorAll('.event');
+                events.forEach(function (eventElement) {
+                    eventElement.addEventListener('mousedown', function (event) {
+                        if (!event.target.classList.contains('resizerTop') && !event.target.classList.contains('resizerBottom')) {
+                            var isDragging = true;
+                            var initialY = event.clientY;
+                            var initialMarginTop = parseInt(eventElement.style.marginTop) || 0;
+                            var parentRect = eventElement.parentNode.getBoundingClientRect();
+
+                            document.addEventListener('mousemove', dragEvent);
+                            document.addEventListener('mouseup', stopDragEvent);
+
+                            // Fonction pour drag les événements
+                            function dragEvent(event) {
+                                if (isDragging) {
+                                    var deltaY = event.clientY - initialY;
+                                    var proposedNewMarginTop = initialMarginTop + deltaY;
+
+                                    var maxNewMarginTop = Math.max(0, proposedNewMarginTop);
+                                    maxNewMarginTop = Math.min(maxNewMarginTop, parentRect.height - eventElement.offsetHeight);
+
+                                    eventElement.style.marginTop = maxNewMarginTop + 'px';
+
+                                    if (isOverlapping(eventElement)) {
+                                        var adjustmentDirection = deltaY > 0 ? -1 : 1;
+                                        while (isOverlapping(eventElement) && ((adjustmentDirection == -1 && maxNewMarginTop > 0) || (adjustmentDirection == 1 && maxNewMarginTop < parentRect.height - eventElement.offsetHeight))) {
+                                            maxNewMarginTop += adjustmentDirection;
+                                            eventElement.style.marginTop = maxNewMarginTop + 'px';
+                                        }
+                                    }
+                                }
+                            }
+
+                            function stopDragEvent() {
+                                document.removeEventListener('mousemove', dragEvent);
+                                document.removeEventListener('mouseup', stopDragEvent);
+                                if (!isOverlapping(eventElement)) {
+                                    calculateEventTime(eventElement.id);
+                                }
+                            }
                         }
                     });
                 });
             });
 
-            var documentConfig = {attributes: true, subtree: true};
-            documentObserver.observe(document.documentElement, documentConfig);
-            document.addEventListener("DOMContentLoaded", function () {
-                var textarea = document.getElementById("textAreaNote");
-                textarea.setAttribute("data-previous-text", textarea.value);
-            });
-
             function cancelNote() {
-                var textarea = document.getElementById("textAreaNote");
-                textarea.value = textarea.getAttribute("data-previous-text");
+                var oldText = "<?php echo htmlspecialchars($noteText); ?>";
+                document.getElementById("textAreaNote").value = oldText;
             }
 
             function checkTask() {
@@ -860,7 +1055,74 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 });
             });
 
+            function setTaskIdDelay(taskId) {
+                document.getElementById('taskIdDelay').value = taskId;
+            }
+
         </script>
+
+        <script>
+            var isCheckedBeforeDrag;
+
+            function allowDrop(ev) {
+                ev.preventDefault();
+            }
+
+            function drag(ev) {
+                if (ev.target.tagName.toLowerCase() === 'input' && ev.target.type === 'text') {
+                    ev.preventDefault();
+                } else {
+                    ev.dataTransfer.setData("text", ev.target.id);
+                    isCheckedBeforeDrag = ev.target.querySelector('input[type="checkbox"]').checked;
+                }
+            }
+
+            function drop(ev, priority) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                var task = document.getElementById(data);
+                var taskId = task.id;
+                var checkbox = task.querySelector('input[type="checkbox"]');
+
+                if (isCheckedBeforeDrag) {
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
+
+                var formData = new FormData();
+                formData.append('idTask', taskId);
+                formData.append('priority', priority);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=change", true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(new URLSearchParams(formData));
+
+                if (priority === 1) {
+                    document.querySelector('.priority-list').appendChild(task);
+                } else {
+                    document.querySelector('.task-list').appendChild(task);
+                }
+            }
+
+            document.getElementById('createEventForm').onsubmit = async function(event) {
+                event.preventDefault();
+
+                if (!validateEventDuration()) {
+                    return false;
+                }
+
+                const isValidTime = await validateEventSameTime();
+                if (!isValidTime) {
+                    return false;
+                }
+
+                event.target.submit();
+            };
+
+        </script>
+
     </div>
 </body>
 </html>

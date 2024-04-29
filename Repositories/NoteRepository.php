@@ -47,9 +47,6 @@ class NoteRepository {
     {
         $session_id = $_COOKIE['PHPSESSID'];
 
-        $text = filter_var($text, FILTER_SANITIZE_STRING);
-        $date = filter_var($date, FILTER_SANITIZE_STRING);
-
         $postData = array(
             'text' => $text,
             'date' => $date
@@ -83,9 +80,6 @@ class NoteRepository {
     public static function updateNote($text, $date)
     {
         $session_id = $_COOKIE['PHPSESSID'];
-
-        $text = filter_var($text, FILTER_SANITIZE_STRING);
-        $date = filter_var($date, FILTER_SANITIZE_STRING);
 
         $postData = array(
             'text' => $text,

@@ -51,10 +51,6 @@ class TaskRepository
     {
         $session_id = $_COOKIE['PHPSESSID'];
 
-        $title = filter_var($title, FILTER_SANITIZE_STRING);
-        $priority = filter_var($priority, FILTER_SANITIZE_STRING);
-        $date = filter_var($date, FILTER_SANITIZE_STRING);
-
         $postData = array(
             'title' => $title,
             'priority' => $priority,
@@ -90,9 +86,6 @@ class TaskRepository
     {
         $session_id = $_COOKIE['PHPSESSID'];
 
-        $priority = filter_var($priority, FILTER_SANITIZE_STRING);
-        $date = filter_var($date, FILTER_SANITIZE_STRING);
-
         $postData = array(
             'idTask' => $idTask,
             'priority' => $priority,
@@ -127,8 +120,6 @@ class TaskRepository
     public static function deleteTask($idTask)
     {
         $session_id = $_COOKIE['PHPSESSID'];
-
-        $idTask = filter_var($idTask, FILTER_SANITIZE_NUMBER_INT);
 
         $postData = array(
             'idTask' => $idTask

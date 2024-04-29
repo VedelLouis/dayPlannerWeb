@@ -10,8 +10,6 @@ class UserRepository
 {
     public static function getUser($login, $password)
     {
-        $login = filter_var($login, FILTER_SANITIZE_STRING);
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
 
         $postData = array(
             'login' => $login,
@@ -35,7 +33,7 @@ class UserRepository
         $userData = json_decode($response, true);
 
         if (isset($userData['success']) && $userData['success'] == 1) {
-            setcookie("PHPSESSID", $userData['session'], time() + 3600, "/");
+            setcookie("PHPSESSID", $userData['session'], time() + (365 * 24 * 3600), "/");
             $user = new User(
                 $userData['idUser'],
                 $userData['login'],
@@ -108,10 +106,6 @@ class UserRepository
 
     public static function createUser($login, $password, $firstname, $lastname)
     {
-        $login = filter_var($login, FILTER_SANITIZE_STRING);
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
-        $firstname = filter_var($firstname, FILTER_SANITIZE_STRING);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_STRING);
 
         $postData = array(
             'login' => $login,
@@ -146,11 +140,6 @@ class UserRepository
 
     public static function updateUser($login, $mdpActuel, $nouveauMdp, $firstname, $lastname)
     {
-        $login = filter_var($login, FILTER_SANITIZE_STRING);
-        $mdpActuel = filter_var($mdpActuel, FILTER_SANITIZE_STRING);
-        $nouveauMdp = filter_var($nouveauMdp, FILTER_SANITIZE_STRING);
-        $firstname = filter_var($firstname, FILTER_SANITIZE_STRING);
-        $lastname = filter_var($lastname, FILTER_SANITIZE_STRING);
 
         $session_id = $_COOKIE['PHPSESSID'];
 

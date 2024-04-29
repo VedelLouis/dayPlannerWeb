@@ -1,3 +1,7 @@
+body {
+    margin-top: 120px;
+}
+
 .date-container {
     margin-top: 50px;
     margin-bottom: 100px;
@@ -142,6 +146,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 45px;
 }
 
 .nameEvent {
@@ -213,12 +218,13 @@
 .listPriorities, .listTasks {
     margin: 0;
     padding: 0;
+    min-height: 20px;
 }
 
 .resizerBottom {
     position: absolute;
     bottom: -10px;
-    left: 50%;
+    left: 49%;
     width: 20px;
     height: 20px;
     background-color: white;
@@ -230,11 +236,25 @@
 .resizerTop {
     position: absolute;
     top: -10px;
-    left: 50%;
+    left: 49%;
     width: 20px;
     height: 20px;
     background-color: white;
     border: 5px solid #b679c7;
     border-radius: 30px;
     cursor: s-resize;
+}
+
+.datePickerTask {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.headerModalTask {
+    height: 70px;
+}
+
+@media (max-width: 560px) {
+    
 }

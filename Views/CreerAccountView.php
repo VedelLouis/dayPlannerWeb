@@ -20,7 +20,8 @@
 
         <form id="create-form" action="index.php?controller=account&action=create" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="login" placeholder="Login" required>
+                <input type="text" class="form-control" name="login" id="login" placeholder="Login (email)" required>
+                <span id="loginError" class="error-message"></span>
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" required>
@@ -60,8 +61,23 @@
         }
     }
 
+    function checkEmail() {
+        var login = document.getElementById('login').value;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var errorSpan = document.getElementById('loginError');
+
+        if (!emailRegex.test(login)) {
+            errorSpan.innerHTML = "Veuillez saisir une adresse email valide.";
+            document.getElementById('submitBtn').disabled = true;
+        } else {
+            errorSpan.innerHTML = "";
+            document.getElementById('submitBtn').disabled = false;
+        }
+    }
+
     document.getElementById('password').addEventListener('input', checkPassword);
     document.getElementById('passwordConfirm').addEventListener('input', checkPassword);
+    document.getElementById('login').addEventListener('input', checkEmail);
 </script>
 
 </body>

@@ -18,7 +18,7 @@ $connectedUser = UserRepository::getConnectedUser();
 
         <form id="edit-form" action="index.php?controller=account&action=edit" method="post">
             <div class="form-group">
-                <input type="text" class="form-control" name="login" value="<?php echo $connectedUser->getLogin(); ?>">
+                <input type="text" class="form-control" name="login" value="<?php echo $connectedUser->getLogin(); ?>" readonly>
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="firstname" value="<?php echo $connectedUser->getFirstName(); ?>">

@@ -51,11 +51,6 @@ class EventRepository
     {
         $session_id = $_COOKIE['PHPSESSID'];
 
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $dateStart = filter_var($dateStart, FILTER_SANITIZE_STRING);
-        $dateEnd = filter_var($dateEnd, FILTER_SANITIZE_STRING);
-        $color = filter_var($color, FILTER_SANITIZE_STRING);
-
         $postData = array(
             'name' => $name,
             'dateStart' => $dateStart,
@@ -91,12 +86,6 @@ class EventRepository
     public static function updateEvent($idEvent,$name, $dateStart, $dateEnd, $color)
     {
         $session_id = $_COOKIE['PHPSESSID'];
-
-        $idEvent = filter_var($idEvent, FILTER_SANITIZE_STRING);
-        $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $dateStart = filter_var($dateStart, FILTER_SANITIZE_STRING);
-        $dateEnd = filter_var($dateEnd, FILTER_SANITIZE_STRING);
-        $color = filter_var($color, FILTER_SANITIZE_STRING);
 
         $postData = array(
             'idEvent' => $idEvent,
@@ -135,8 +124,6 @@ class EventRepository
     {
         $session_id = $_COOKIE['PHPSESSID'];
 
-        $idEvent = filter_var($idEvent, FILTER_SANITIZE_STRING);
-
         $postData = array(
             'idEvent' => $idEvent
         );
@@ -159,11 +146,36 @@ class EventRepository
 
         $response = json_decode($data, true);
 
-        if (isset($response['success']) && $response['success'] == 1) {
-            return 1;
-        } else {
-            return 0;
+        return $response;
+    }
+
+    public static function eventSameTime($dateStart, $dateEnd)
+    {
+        $session_id = $_COOKIE['PHPSESSID'];
+
+        $postData = array(
+            'dateStart' => $dateStart,
+            'dateEnd' => $dateEnd
+        );
+
+        $url = "https://dayplanner.tech/api/?controller=event&action=sameTime";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$session_id"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($ch);
+
+        if ($data === false) {
+            die(curl_error($ch));
         }
+
+        curl_close($ch);
+
+        $response = json_decode($data, true);
+        return $response;
     }
 
 }
