@@ -51,7 +51,7 @@
             document.getElementById("deleteEventDate").value = eventDate;
         }
 
-        function ajouterTache(priority, date) {
+        function createTask(priority, date) {
             var nouvelleTacheTexte = "";
 
             if (priority === 1) {
@@ -92,18 +92,18 @@
 
             <div class="container-buttons">
                 <button type="button" class="btn btn-light btn-sm"
-                    data-bs-toggle="modal" data-bs-target="#modalDelayTask">
+                    data-bs-toggle="modal" data-bs-target="#modalDelayTask"
+                    onclick="setTaskIdDelay(document.getElementById('hiddenTaskId').getAttribute('value'), this.parentNode.parentNode)">
                     <i class="bi bi-calendar-date"></i>
                 </button>
 
                 <button type="button" class="btn btn-light btn-sm"
-                    onclick="deleteTask(this.parentNode, document.getElementById('hiddenTaskId').getAttribute('value'))">
+                    onclick="deleteTask(this.parentNode.parentNode, document.getElementById('hiddenTaskId').getAttribute('value'))">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
         </div>
     `;
-
             var list;
             if (priority === 1) {
                 list = document.querySelector(".listPriorities");
@@ -117,8 +117,7 @@
         }
 
         function deleteTask(buttonElement, taskId) {
-            var taskElement = buttonElement.parentNode.parentNode;
-            taskElement.remove();
+            buttonElement.remove();
 
             var formData = new FormData();
             formData.append('idTask', taskId);
@@ -129,18 +128,22 @@
             xhr.send(new URLSearchParams(formData));
         }
 
-        function delayTask(buttonElement, taskId, date) {
-            var taskElement = buttonElement.parentNode.parentNode;
-            taskElement.remove();
+        function delayTask(taskId, newDate) {
+            if (currentTaskElement) {
+                currentTaskElement.remove();
+            }
 
-            var formData = new FormData();
+            var delayModal = bootstrap.Modal.getInstance(document.getElementById('modalDelayTask'));
+            delayModal.hide();
+
+            var formData = new URLSearchParams();
             formData.append('idTask', taskId);
-            formData.append('date', date);
+            formData.append('date', newDate);
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=delay", true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send(new URLSearchParams(formData));
+            xhr.send(formData);
         }
 
         function validateEventDuration() {
@@ -159,6 +162,23 @@
                 return true
             }
         }
+
+        function validateEventDurationUpdate() {
+            var startTime = document.getElementById('updateEventTimeStart').value;
+            var endTime = document.getElementById('updateEventTimeEnd').value;
+
+            var start = new Date("01/01/2000 " + startTime);
+            var end = new Date("01/01/2000 " + endTime);
+
+            var diff = (end - start) / 60000;
+
+            if (diff < 30) {
+                alert("La durée minimale d'un événement est de 30 minutes.");
+                return false;
+            }
+            return true;
+        }
+
 
         function validateEventSameTime() {
             return new Promise((resolve, reject) => {
@@ -402,7 +422,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         </div>
                         <div class="modal-body">
                             <form action="index.php?controller=event&action=update" method="post"
-                                  onsubmit="return validateEventDuration() && validateEventSameTime()"
+                                  onsubmit="return validateEventDurationUpdate() && validateEventSameTime()"
                                   id="updateEventForm">
                                 <input type="hidden" id="updateEventId" name="updateEventId">
                                 <div class="mb-3">
@@ -471,8 +491,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" id="taskIdDelay" name="taskIdDelay">
+                            <input type="hidden" id="elementTask" name="elementTask">
                             <button type="submit" class="btn saveButton"
-                                    onclick="delayTask(this.parentNode.parentNode, document.getElementById('taskIdDelay').value, document.getElementById('dateModalDelay').value, )">Enregistrer</button>
+                                    onclick="delayTask((document.getElementById('taskIdDelay').value), (document.getElementById('dateModalDelay').value))">Enregistrer</button>
                         </div>
                     </div>
                 </div>
@@ -548,10 +569,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                                 <label for="priorities"
                                                        class="form-check-label"><?php echo $task->getTitle(); ?></label>
                                             </div>
-                                            <div class="ml-auto">
+                                            <div class="ml-auto tasksList">
                                                 <button type="button" class="btn btn-light btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#modalDelayTask"
-                                                        onclick="setTaskIdDelay(<?php echo $task->getIdTask(); ?>)">
+                                                        onclick="setTaskIdDelay((<?php echo $task->getIdTask(); ?>), (this.parentNode.parentNode))">
                                                     <i class="bi bi-calendar-date"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-light btn-sm"
@@ -571,7 +592,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             </div>
                             <div class="col-auto">
                                 <button type="button" id="submitAddPriority" class="btn btn-primary btn-sm addPriority"
-                                        onclick="ajouterTache(1, '<?php echo $date ?>')">
+                                        onclick="createTask(1, '<?php echo $date ?>')">
                                     <i class="bi bi-journal-plus"></i>
                                 </button>
                             </div>
@@ -598,10 +619,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                                 <label for="tasks"
                                                        class="form-check-label"><?php echo $task->getTitle(); ?></label>
                                             </div>
-                                            <div class="ml-auto">
-                                                <button type="button" class="btn btn-light btn-sm"
+                                            <div class="ml-auto tasksList">
+                                                <button type="button" id="buttonCalendartask" class="btn btn-light btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#modalDelayTask"
-                                                        onclick="setTaskIdDelay(<?php echo $task->getIdTask(); ?>)">
+                                                        onclick="setTaskIdDelay((<?php echo $task->getIdTask(); ?>), (this.parentNode.parentNode))">
                                                     <i class="bi bi-calendar-date"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-light btn-sm"
@@ -621,7 +642,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             </div>
                             <div class="col-auto">
                                 <button type="button" id="submitAddTask" class="btn btn-primary btn-sm addTask"
-                                        onclick="ajouterTache(0, '<?php echo $date ?>')">
+                                        onclick="createTask(0, '<?php echo $date ?>')">
                                     <i class="bi bi-journal-plus"></i>
                                 </button>
                             </div>
@@ -640,7 +661,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                   echo 'index.php?controller=note&action=create';
                               }
                               ?>">
-                            <textarea id="textAreaNote" rows="10" cols="50" name="notes"
+                            <textarea id="textAreaNote" rows="10" cols="50" name="notes" placeholder="..."
                                       form="notesForm"><?php echo htmlspecialchars($noteText); ?></textarea>
                             <button class="saveButtonNote" type="submit">Enregistrer</button>
                             <button class="cancelButtonNote" type="button" onclick="cancelNote()">Annuler</button>
@@ -871,6 +892,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             var deltaY = event.clientY - startY;
                             var newHeight, newMarginTop;
 
+                            // Bouton de redimension du haut
                             if (resizerElement.classList.contains('resizerTop')) {
                                 newHeight = initialHeight - deltaY;
                                 newMarginTop = startMarginTop + deltaY;
@@ -903,6 +925,23 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                         newHeight--;
                                         eventElement.style.height = newHeight + 'px';
                                     }
+                                }
+                                // Bouton de redimension du bas
+                            } else if (resizerElement.classList.contains('resizerBottom')) {
+                                newHeight = initialHeight + deltaY;
+                                newHeight = Math.max(45, newHeight);
+                                newHeight = Math.min(newHeight, parentRect.height - startMarginTop);
+
+                                eventElement.style.height = newHeight + 'px';
+
+                                while (isOverlapping(eventElement) && newHeight > 45) {
+                                    newHeight--;
+                                    if (newHeight <= 45) {
+                                        newHeight = 45;
+                                        eventElement.style.height = newHeight + 'px';
+                                        break;
+                                    }
+                                    eventElement.style.height = newHeight + 'px';
                                 }
                             }
                         }
@@ -1055,8 +1094,11 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 });
             });
 
-            function setTaskIdDelay(taskId) {
+            var currentTaskElement = null;
+
+            function setTaskIdDelay(taskId, taskElement) {
                 document.getElementById('taskIdDelay').value = taskId;
+                currentTaskElement = taskElement;
             }
 
         </script>

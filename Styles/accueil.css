@@ -26,7 +26,6 @@ body {
     font-size: 20px;
     padding: 0;
     margin: 0;
-
     border-top: 2px solid #878787;
     height: 90px;
 }
@@ -234,7 +233,7 @@ body {
 }
 
 .resizerTop {
-    position: absolute;
+    position:absolute;
     top: -10px;
     left: 49%;
     width: 20px;
@@ -255,6 +254,6 @@ body {
     height: 70px;
 }
 
-@media (max-width: 560px) {
-    
+@media (max-width: 768px) {
+
 }
