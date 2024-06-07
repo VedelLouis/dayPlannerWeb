@@ -179,7 +179,6 @@
             return true;
         }
 
-
         function validateEventSameTime() {
             return new Promise((resolve, reject) => {
                 var date = document.getElementById('eventDate').value;
@@ -213,6 +212,50 @@
                     }
                 };
             });
+        }
+
+        async function updateEventHandler(event) {
+            event.preventDefault();
+
+            var eventId = document.getElementById("updateEventId").value;
+            var eventName = document.getElementById("updateEventName").value;
+            var eventDate = document.getElementById("updateEventDate").value;
+            var startTime = document.getElementById("updateEventTimeStart").value;
+            var endTime = document.getElementById("updateEventTimeEnd").value;
+            var eventColor = document.getElementById("updateEventColor").value;
+
+            var dateStart = eventDate + ' ' + startTime;
+            var dateEnd = eventDate + ' ' + endTime;
+
+            if (!validateEventDurationUpdate()) {
+                return false;
+            }
+
+            const isValid = await validateEventSameTime();
+            if (!isValid) {
+                return false;
+            }
+
+            var formData = new FormData();
+            formData.append('idEvent', eventId);
+            formData.append('name', eventName);
+            formData.append('date', eventDate);
+            formData.append('dateStart', dateStart);
+            formData.append('dateEnd', dateEnd);
+            formData.append('color', eventColor);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=update", true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(new URLSearchParams(formData));
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    location.reload();
+                } else {
+                    console.log("Erreur de modification de l'évènement.")
+                }
+            }
         }
 
     </script>
@@ -265,7 +308,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
 <div class="date-container">
     <div class="row">
         <div class="col-auto  flechel d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangePrevious('<?php echo $previousDate ?>');" class="btn btn-light btnCaret">
+            <button type="button" onclick="onDateChangePrevious('<?php echo $previousDate ?>');"
+                    class="btn btn-light btnCaret">
                 <i class="bi bi-caret-left fs-2"></i></button>
         </div>
 
@@ -326,7 +370,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
         </div>
 
         <div class="col-auto flecher d-flex align-items-center justify-content-center">
-            <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light btnCaret"><i
+            <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light btnCaret">
+                <i
                         class="bi bi-caret-right fs-2"></i></button>
 
         </div>
@@ -421,9 +466,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             </div>
                         </div>
                         <div class="modal-body">
-                            <form action="index.php?controller=event&action=update" method="post"
-                                  onsubmit="return validateEventDurationUpdate() && validateEventSameTime()"
-                                  id="updateEventForm">
+                            <form id="updateEventForm" onsubmit="updateEventHandler(event)">
                                 <input type="hidden" id="updateEventId" name="updateEventId">
                                 <div class="mb-3">
                                     <label for="updateEventName" class="form-label">Nom de l'événement</label>
@@ -474,7 +517,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             <div class="container headerModalTask">
                                 <div class="row">
                                     <div class="col">
-                                        <h1 class="modal-title fs-5" id="titleModal">Renvoyer la tâche sur un autre jour</h1>
+                                        <h1 class="modal-title fs-5" id="titleModal">Renvoyer la tâche sur un autre
+                                            jour</h1>
                                     </div>
                                     <div class="col text-end">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -493,7 +537,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             <input type="hidden" id="taskIdDelay" name="taskIdDelay">
                             <input type="hidden" id="elementTask" name="elementTask">
                             <button type="submit" class="btn saveButton"
-                                    onclick="delayTask((document.getElementById('taskIdDelay').value), (document.getElementById('dateModalDelay').value))">Enregistrer</button>
+                                    onclick="delayTask((document.getElementById('taskIdDelay').value), (document.getElementById('dateModalDelay').value))">
+                                Enregistrer
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -620,7 +666,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                                        class="form-check-label"><?php echo $task->getTitle(); ?></label>
                                             </div>
                                             <div class="ml-auto tasksList">
-                                                <button type="button" id="buttonCalendartask" class="btn btn-light btn-sm"
+                                                <button type="button" id="buttonCalendartask"
+                                                        class="btn btn-light btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#modalDelayTask"
                                                         onclick="setTaskIdDelay((<?php echo $task->getIdTask(); ?>), (this.parentNode.parentNode))">
                                                     <i class="bi bi-calendar-date"></i>
@@ -846,12 +893,11 @@ if ($date == NULL || $date == date('Y-m-d')) {
                     endHour = 0;
                 }
                 timeEndElement.textContent = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
-
             }
 
             // Mettre à jour l'heure de début et de fin du modal de modification de l'event
-            document.querySelectorAll('.event').forEach(function(eventElement) {
-                eventElement.addEventListener('click', function() {
+            document.querySelectorAll('.event').forEach(function (eventElement) {
+                eventElement.addEventListener('click', function () {
                     document.getElementById('updateEventId').value = eventElement.id;
                     calculateEventTime(eventElement.id);
                 });
@@ -1148,7 +1194,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 }
             }
 
-            document.getElementById('createEventForm').onsubmit = async function(event) {
+            document.getElementById('createEventForm').onsubmit = async function (event) {
                 event.preventDefault();
 
                 if (!validateEventDuration()) {
