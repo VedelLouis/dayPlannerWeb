@@ -3,6 +3,7 @@
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.0/font/bootstrap-icons.min.css"
           rel="stylesheet">
+    <link rel="stylesheet" href="Styles/accueil.css" type="text/css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -904,20 +905,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
             });
 
             document.addEventListener('DOMContentLoaded', function () {
-                // Fonction pour empecher le drag et le redimensionnement des évènements en même temps
-                function isOverlapping(testElement) {
-                    var testRect = testElement.getBoundingClientRect();
-                    var allEvents = document.querySelectorAll('.event');
-                    for (var i = 0; i < allEvents.length; i++) {
-                        if (allEvents[i] === testElement) continue;
-                        var compRect = allEvents[i].getBoundingClientRect();
-                        if (testRect.bottom > compRect.top && testRect.top < compRect.bottom &&
-                            testRect.right > compRect.left && testRect.left < compRect.right) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
 
                 // Redimensionnement des évènements
                 document.querySelectorAll('.event .resizerTop, .event .resizerBottom').forEach(function (resizerElement) {
@@ -938,67 +925,39 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             var deltaY = event.clientY - startY;
                             var newHeight, newMarginTop;
 
-                            // Bouton de redimension du haut
                             if (resizerElement.classList.contains('resizerTop')) {
                                 newHeight = initialHeight - deltaY;
                                 newMarginTop = startMarginTop + deltaY;
 
-                                newHeight = Math.max(45, newHeight);
-                                newHeight = Math.min(newHeight, initialHeight + startMarginTop);
-                                newMarginTop = Math.max(0, newMarginTop);
+                                if (newHeight < 45) {
+                                    newHeight = 45;
+                                    newMarginTop = startMarginTop + (initialHeight - 45);
+                                } else {
+                                    newHeight = Math.min(newHeight, initialHeight + startMarginTop);
+                                    newMarginTop = Math.max(0, newMarginTop);
+                                }
 
                                 eventElement.style.height = newHeight + 'px';
                                 eventElement.style.marginTop = newMarginTop + 'px';
                             } else {
                                 newHeight = initialHeight + deltaY;
-                                newHeight = Math.max(45, newHeight);
-                                newHeight = Math.min(newHeight, parentRect.height - startMarginTop);
 
-                                eventElement.style.height = newHeight + 'px';
-                            }
-
-                            if (isOverlapping(eventElement)) {
-                                if (resizerElement.classList.contains('resizerTop')) {
-                                    while (isOverlapping(eventElement) && newHeight > 45) {
-                                        newHeight--;
-                                        newMarginTop++;
-                                        eventElement.style.height = newHeight + 'px';
-                                        eventElement.style.marginTop = newMarginTop + 'px';
-                                        if (newMarginTop >= parentRect.height - 45) break;
-                                    }
+                                if (newHeight < 45) {
+                                    newHeight = 45;
                                 } else {
-                                    while (isOverlapping(eventElement) && newHeight > 45) {
-                                        newHeight--;
-                                        eventElement.style.height = newHeight + 'px';
-                                    }
+                                    newHeight = Math.min(newHeight, parentRect.height - startMarginTop);
                                 }
-                                // Bouton de redimension du bas
-                            } else if (resizerElement.classList.contains('resizerBottom')) {
-                                newHeight = initialHeight + deltaY;
-                                newHeight = Math.max(45, newHeight);
-                                newHeight = Math.min(newHeight, parentRect.height - startMarginTop);
 
                                 eventElement.style.height = newHeight + 'px';
-
-                                while (isOverlapping(eventElement) && newHeight > 45) {
-                                    newHeight--;
-                                    if (newHeight <= 45) {
-                                        newHeight = 45;
-                                        eventElement.style.height = newHeight + 'px';
-                                        break;
-                                    }
-                                    eventElement.style.height = newHeight + 'px';
-                                }
                             }
                         }
 
                         function stopResizeEvent() {
                             document.removeEventListener('mousemove', resizeEvent);
                             document.removeEventListener('mouseup', stopResizeEvent);
-                            if (!isOverlapping(eventElement)) {
-                                calculateEventTime(eventId);
-                            }
+                            calculateEventTime(eventId);
                         }
+
                     });
                 });
 
@@ -1024,23 +983,13 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                     maxNewMarginTop = Math.min(maxNewMarginTop, parentRect.height - eventElement.offsetHeight);
 
                                     eventElement.style.marginTop = maxNewMarginTop + 'px';
-
-                                    if (isOverlapping(eventElement)) {
-                                        var adjustmentDirection = deltaY > 0 ? -1 : 1;
-                                        while (isOverlapping(eventElement) && ((adjustmentDirection == -1 && maxNewMarginTop > 0) || (adjustmentDirection == 1 && maxNewMarginTop < parentRect.height - eventElement.offsetHeight))) {
-                                            maxNewMarginTop += adjustmentDirection;
-                                            eventElement.style.marginTop = maxNewMarginTop + 'px';
-                                        }
-                                    }
                                 }
                             }
 
                             function stopDragEvent() {
                                 document.removeEventListener('mousemove', dragEvent);
                                 document.removeEventListener('mouseup', stopDragEvent);
-                                if (!isOverlapping(eventElement)) {
-                                    calculateEventTime(eventElement.id);
-                                }
+                                calculateEventTime(eventElement.id);
                             }
                         }
                     });

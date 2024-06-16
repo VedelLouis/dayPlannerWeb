@@ -8,7 +8,6 @@ body {
 .menu {
     display: flex;
     padding:0;
-    background-color: #fff;
     justify-content: space-around;
 }
 .menu li {
@@ -22,7 +21,6 @@ body {
     margin: 0.5rem;
     padding: 0.4rem 0;
     text-align: center;
-    background-color: #ffffff;
     color: #a163f5;
     text-decoration: none;
     border: 3px solid #a163f5;
@@ -30,13 +28,8 @@ body {
 
     transition: all 1s ;
 }
-.menu a.actif {
-    background-color: #005A82 ;
-    color: white ;
-    border-color: white ;
-}
-.menu a:hover,
-.menu a:hover.actif{
+
+.menu a:hover {
     background-color: #a163f5;
     color: white;
     border-color: #a163f5;
@@ -51,7 +44,6 @@ body {
 
 .navbar {
     display: flex;
-    background-color: #fff;
     justify-content: space-around;
     position: fixed;
     top: 0;
