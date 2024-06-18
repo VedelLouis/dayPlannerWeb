@@ -149,33 +149,4 @@ class EventRepository
         return $response;
     }
 
-    public static function eventSameTime($dateStart, $dateEnd)
-    {
-        $session_id = $_COOKIE['PHPSESSID'];
-
-        $postData = array(
-            'dateStart' => $dateStart,
-            'dateEnd' => $dateEnd
-        );
-
-        $url = "https://dayplanner.tech/api/?controller=event&action=sameTime";
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=$session_id"));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $data = curl_exec($ch);
-
-        if ($data === false) {
-            die(curl_error($ch));
-        }
-
-        curl_close($ch);
-
-        $response = json_decode($data, true);
-        return $response;
-    }
-
 }

@@ -11,9 +11,10 @@
 
     <script>
 
+        // Fonctions pour changer la date sélectionnée via le datepicker, les flèches ou les boutons de la semaine
+
         function onDateChange() {
             var newDate = document.getElementById("dateCalendar").value;
-            console.log(newDate);
             document.location.href = "index.php?controller=accueil&action=index&dateCalendar=" + newDate;
         }
 
@@ -51,6 +52,9 @@
             document.getElementById("deleteEventId").value = eventId;
             document.getElementById("deleteEventDate").value = eventDate;
         }
+
+        // Fonction qui gère la création d'une tâche et son affichage dans la liste des tâches
+        // permet la modification de la tâche juste après création
 
         function createTask(priority, date) {
             var nouvelleTacheTexte = "";
@@ -129,6 +133,8 @@
             xhr.send(new URLSearchParams(formData));
         }
 
+        // Fonction qui permet de changer la date d'une tâche
+
         function delayTask(taskId, newDate) {
             if (currentTaskElement) {
                 currentTaskElement.remove();
@@ -147,6 +153,8 @@
             xhr.send(formData);
         }
 
+        // Fonction qui valide la durée minimale d'un événement pour la création d'un évènement
+
         function validateEventDuration() {
             var startTime = document.getElementById('startTime').value;
             var endTime = document.getElementById('endTime').value;
@@ -164,6 +172,8 @@
             }
         }
 
+        // Fonction qui valide la durée minimale d'un événement pour la modification d'un évènement
+
         function validateEventDurationUpdate() {
             var startTime = document.getElementById('updateEventTimeStart').value;
             var endTime = document.getElementById('updateEventTimeEnd').value;
@@ -180,40 +190,42 @@
             return true;
         }
 
-        function validateEventSameTime() {
+        // Fonction qui valide si un évènement ne chevauche pas un autre évènement
+        // Deux évènements ne peuvent pas avoir lieu en même temps
+
+        function validateEventSameTime(dateStart, dateEnd, idEvent) {
             return new Promise((resolve, reject) => {
-                var date = document.getElementById('eventDate').value;
-                var startTime = document.getElementById('startTime').value;
-                var endTime = document.getElementById('endTime').value;
-
-                var dateStart = date + ' ' + startTime;
-                var dateEnd = date + ' ' + endTime;
-
                 var formData = new FormData();
                 formData.append('dateStart', dateStart);
                 formData.append('dateEnd', dateEnd);
+                if (idEvent) {
+                    formData.append('idEvent', idEvent);
+                }
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=sameTime", true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.send(new URLSearchParams(formData));
-
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        var jsonResponse = JSON.parse(xhr.responseText);
+                fetch('https://dayplanner.tech/api/?controller=event&action=sameTime', {
+                    method: 'POST',
+                    body: new URLSearchParams(formData),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(jsonResponse => {
                         var isEventSameTime = jsonResponse.success;
                         if (isEventSameTime > 0) {
-                            alert('Il y a déjà un autre évènement en cours sur ces horaires.');
-                            resolve(false);
+                            resolve(false);  // Il y a un chevauchement
                         } else {
-                            resolve(true);
+                            resolve(true);  // Aucun chevauchement
                         }
-                    } else {
-                        resolve(false);
-                    }
-                };
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                        reject(error);
+                    });
             });
         }
+
+        // Fonction qui gère la modification d'un évènement
 
         async function updateEventHandler(event) {
             event.preventDefault();
@@ -227,13 +239,21 @@
 
             var dateStart = eventDate + ' ' + startTime;
             var dateEnd = eventDate + ' ' + endTime;
+            var idEvent = eventId.split('_')[1];
 
             if (!validateEventDurationUpdate()) {
+                alert("La durée minimale d'un événement est de 30 minutes.");
                 return false;
             }
 
-            const isValid = await validateEventSameTime();
-            if (!isValid) {
+            try {
+                const isValid = await validateEventSameTime(dateStart, dateEnd, idEvent);
+                if (!isValid) {
+                    alert("Un autre événement existe déjà sur cette période.");
+                    return false;
+                }
+            } catch (error) {
+                console.error("Erreur");
                 return false;
             }
 
@@ -254,19 +274,22 @@
                 if (xhr.status === 200) {
                     location.reload();
                 } else {
-                    console.log("Erreur de modification de l'évènement.")
+                    console.error("Erreur");
                 }
-            }
+            };
         }
 
     </script>
 </head>
 <body>
 <?php
-
 $today = strftime("%A %e %B %Y");
 $date = filter_input(INPUT_GET, 'dateCalendar', FILTER_SANITIZE_STRING);
 setlocale(LC_TIME, 'fr_FR.utf8', 'fra');
+
+// Gère l'affichage du calendrier en fonction du jour selectionné
+// Par défaut la date selectionné est la date d'aujourd'hui
+
 if ($date == NULL || $date == date('Y-m-d')) {
     $dateActuelle = $today;
     $date = date('Y-m-d');
@@ -300,7 +323,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
     $nextDate = date('Y-m-d', strtotime(' +1 day', strtotime($date)));
 }
 ?>
-
 <form id="dateForm">
     <input type="date" id="dateCalendar" name="dateCalendar">
     <button type="button" onclick="onDateChange()" class="btn btn-date btn-block">Aller à cette date</button>
@@ -325,6 +347,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
             <div class="row jour">
                 <?php
+
+                // Gère l'affichage des jours de la semaine quand onchange le jour sélectionné
+
                 // Obtenir le mois et l'année de la date sélectionnée
                 $annee = date('Y', strtotime($date));
                 $mois = date('m', strtotime($date));
@@ -372,8 +397,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
 
         <div class="col-auto flecher d-flex align-items-center justify-content-center">
             <button type="button" onclick="onDateChangeNext('<?php echo $nextDate ?>');" class="btn btn-light btnCaret">
-                <i
-                        class="bi bi-caret-right fs-2"></i></button>
+                <i class="bi bi-caret-right fs-2"></i></button>
 
         </div>
     </div>
@@ -546,11 +570,49 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 </div>
             </div>
 
+            <div class="modal fade" id="moveEventModal" tabindex="-1" aria-labelledby="moveEventModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="moveEventModalLabel">Déplacer l'événement</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="d-grid gap-2" onsubmit="event.preventDefault();">
+                                <button type="button" class="btn saveButton" onclick="closeMoveEventModal();">
+                                    Laisser l'emplacement vide
+                                </button>
+                                <div class="mb-3">
+                                    <label for="moveEventName" class="form-label">Nom de l'événement</label>
+                                    <input type="text" class="form-control" id="moveEventName" name="moveEventName"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="moveEventColor" class="form-label">Couleur de l'événement</label>
+                                    <input type="color" class="form-control" id="moveEventColor" name="moveEventColor"
+                                           value="#000000">
+                                </div>
+                                <button type="submit" class="btn saveButton" onclick="handleChoiceMove(2)">
+                                    Créer un événement sur l'emplacement vide
+                                </button>
+                                <input type="hidden" id="originalStart" name="originalStart">
+                                <input type="hidden" id="originalEnd" name="originalEnd">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <?php
             $currentHourMinute = date('H:i');
             ?>
             <div class="row tableauHeure">
                 <?php
+
+                // Affichage de la liste des heures, de 00h00 à 23h59
+                // Affichage de la barre rouge de l'heure actuelle que si la date selectionné est la date actuelle
+
                 if ($date == NULL || $date == date('Y-m-d')) {
 
                     echo '<div class="row heureLigneActuelle">';
@@ -583,9 +645,13 @@ if ($date == NULL || $date == date('Y-m-d')) {
         <div class="col-md-4">
 
             <?php
+
+            // Fetch des tâches et notes et les affichent pour la date sélectionnée
+
             $tasks = \Repositories\TaskRepository::getTasks($date);
             $note = \Repositories\NoteRepository::getNotes($date);
 
+            // Si la note existe mettre le texte dans la variable $noteText sinon mettre un input vide
             if ($note) {
                 $noteText = ($note[0]->getText());
                 $isNote = 1;
@@ -726,6 +792,9 @@ if ($date == NULL || $date == date('Y-m-d')) {
             ?>
             <script>
 
+                // Fonctions qui mettent à jour la barre rouge de l'heure actuelle,
+                // Changement de l'heure et déplacement de la barre rouge en tant réel
+
                 function updateHourLinePosition() {
                     var hourLine = document.querySelector('.heureLigneActuelle');
                     var now = new Date();
@@ -770,6 +839,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
         ?>
 
         <script>
+
+            // Fonction qui gère la création de l'évènement et son affichage dans la grille des heures
 
             function createEvents(id, color, dateStart, dateEnd, name) {
                 var eventId = "event_" + id;
@@ -830,11 +901,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
             echo $events;
 
             if ($events) {
-
             foreach ($events as $event) {
-
             ?>
 
+            // Fetch les évènements pour les afficher
             createEvents(
                 '<?php echo $event->getIdEvent() ?>',
                 '<?php echo $event->getColor() ?>',
@@ -848,7 +918,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
             }
             ?>
 
-            function calculateEventTime(eventId) {
+            // Fonction qui calcule comment afficher les évènements,
+            // Calcule la marge du haut et la hauteur avec la durée de l'évènement, l'heure de début et de fin
+
+            async function calculateEventTime(eventId) {
                 var eventElement = document.getElementById(eventId);
                 var marginTopPixels = eventElement.offsetTop;
                 var heightPixels = eventElement.offsetHeight;
@@ -863,12 +936,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 var endHour = Math.floor(endMinute / 60);
                 endMinute = Math.floor(endMinute % 60);
 
-                var startTimeFormatted = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
-                var endTimeFormatted = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
-
-                document.getElementById('updateEventTimeStart').value = startTimeFormatted;
-                document.getElementById('updateEventTimeEnd').value = endTimeFormatted;
-
                 var startDate = new Date(<?php echo json_encode($date); ?> +" " + startHour + ":" + startMinuteRemainder);
                 var endDate = new Date(<?php echo json_encode($date); ?> +" " + endHour + ":" + endMinute);
                 startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
@@ -876,24 +943,47 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 var formattedStartDate = startDate.toISOString().slice(0, 16).replace('T', ' ');
                 var formattedEndDate = endDate.toISOString().slice(0, 16).replace('T', ' ');
 
-                var formData = new FormData();
-                formData.append('idEvent', eventId);
-                formData.append('dateStart', formattedStartDate);
-                formData.append('dateEnd', formattedEndDate);
+                var idEvent = eventId.split('_')[1];
 
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=updateTime", true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.send(new URLSearchParams(formData));
+                try {
+                    // Vérifie si l'évènement est déplacé sur un emplacement vide,
+                    // Si non le déplacement est annulé
+                    const isValid = await validateEventSameTime(formattedStartDate, formattedEndDate, idEvent);
+                    if (!isValid) {
+                        var messageElement = document.getElementById('messageSameTime');
+                        messageElement.style.display = 'block';
+                        setTimeout(function () {
+                            messageElement.style.display = 'none';
+                        }, 3000);
+                        eventElement.style.marginTop = originalMarginTop;
+                        eventElement.style.height = originalHeight;
+                        return false;
+                    } else {
+                        var formData = new FormData();
+                        formData.append('idEvent', eventId);
+                        formData.append('dateStart', formattedStartDate);
+                        formData.append('dateEnd', formattedEndDate);
 
-                var timeStartElement = eventElement.querySelector('.timeStart');
-                timeStartElement.textContent = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=updateTime", true);
+                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhr.send(new URLSearchParams(formData));
 
-                var timeEndElement = eventElement.querySelector('.timeEnd');
-                if (endHour === 24) {
-                    endHour = 0;
+                        var timeStartElement = eventElement.querySelector('.timeStart');
+                        timeStartElement.textContent = startHour.toString().padStart(2, '0') + ":" + startMinuteRemainder.toString().padStart(2, '0');
+
+                        var timeEndElement = eventElement.querySelector('.timeEnd');
+                        if (endHour === 24) {
+                            endHour = 0;
+                        }
+                        timeEndElement.textContent = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
+                    }
+                } catch (error) {
+                    console.error("Erreur");
+                    eventElement.style.marginTop = originalMarginTop;
+                    eventElement.style.height = originalHeight;
+                    return false;
                 }
-                timeEndElement.textContent = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
             }
 
             // Mettre à jour l'heure de début et de fin du modal de modification de l'event
@@ -905,7 +995,6 @@ if ($date == NULL || $date == date('Y-m-d')) {
             });
 
             document.addEventListener('DOMContentLoaded', function () {
-
                 // Redimensionnement des évènements
                 document.querySelectorAll('.event .resizerTop, .event .resizerBottom').forEach(function (resizerElement) {
                     resizerElement.addEventListener('mousedown', function (event) {
@@ -917,6 +1006,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         var startMarginTop = parseInt(eventElement.style.marginTop) || 0;
                         var parentElement = eventElement.parentNode;
                         var parentRect = parentElement.getBoundingClientRect();
+                        var originalMarginTop = eventElement.style.marginTop;
+                        var originalHeight = eventElement.style.height;
 
                         document.addEventListener('mousemove', resizeEvent);
                         document.addEventListener('mouseup', stopResizeEvent);
@@ -952,10 +1043,14 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             }
                         }
 
+                        // Fonction quand on relache le redimmensionement d'un évènement
                         function stopResizeEvent() {
                             document.removeEventListener('mousemove', resizeEvent);
                             document.removeEventListener('mouseup', stopResizeEvent);
-                            calculateEventTime(eventId);
+                            calculateEventTime(eventId).catch(() => {
+                                eventElement.style.marginTop = originalMarginTop;
+                                eventElement.style.height = originalHeight;
+                            });
                         }
 
                     });
@@ -966,17 +1061,28 @@ if ($date == NULL || $date == date('Y-m-d')) {
                     eventElement.addEventListener('mousedown', function (event) {
                         if (!event.target.classList.contains('resizerTop') && !event.target.classList.contains('resizerBottom')) {
                             var isDragging = true;
+                            var hasMoved = false;
                             var initialY = event.clientY;
                             var initialMarginTop = parseInt(eventElement.style.marginTop) || 0;
                             var parentRect = eventElement.parentNode.getBoundingClientRect();
+                            var originalMarginTop = eventElement.style.marginTop;
+                            var originalHeight = eventElement.style.height;
 
                             document.addEventListener('mousemove', dragEvent);
                             document.addEventListener('mouseup', stopDragEvent);
+
+                            var startTimeElement = eventElement.querySelector('.timeStart');
+                            var endTimeElement = eventElement.querySelector('.timeEnd');
+                            document.getElementById('originalStart').value = startTimeElement.textContent;
+                            document.getElementById('originalEnd').value = endTimeElement.textContent;
 
                             // Fonction pour drag les événements
                             function dragEvent(event) {
                                 if (isDragging) {
                                     var deltaY = event.clientY - initialY;
+                                    if (Math.abs(deltaY) > 0) {
+                                        hasMoved = true;
+                                    }
                                     var proposedNewMarginTop = initialMarginTop + deltaY;
 
                                     var maxNewMarginTop = Math.max(0, proposedNewMarginTop);
@@ -986,16 +1092,25 @@ if ($date == NULL || $date == date('Y-m-d')) {
                                 }
                             }
 
+                            // Fonction quand on relache le drag d'un évènement
                             function stopDragEvent() {
                                 document.removeEventListener('mousemove', dragEvent);
                                 document.removeEventListener('mouseup', stopDragEvent);
-                                calculateEventTime(eventElement.id);
+                                if (hasMoved) {
+                                    calculateEventTime(eventElement.id).catch(() => {
+                                        eventElement.style.marginTop = originalMarginTop;
+                                        eventElement.style.height = originalHeight;
+                                    });
+                                    var moveEventModal = new bootstrap.Modal(document.getElementById('moveEventModal'));
+                                    moveEventModal.show();
+                                }
                             }
                         }
                     });
                 });
             });
 
+            // Annule la modification de la note est remet l'ancien texte
             function cancelNote() {
                 var oldText = "<?php echo htmlspecialchars($noteText); ?>";
                 document.getElementById("textAreaNote").value = oldText;
@@ -1030,6 +1145,8 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 checkTask();
             });
 
+            // Fonction pour modifier une tâche,
+            // la marquer comme faite ou non faite
             function checkTaskDone(taskId, done) {
 
                 var doneTask;
@@ -1049,6 +1166,10 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 xhr.send(new URLSearchParams(formData));
 
             }
+
+            // Fonctions qui verifie la validité d'un évènement avant création ou modification,
+            // vérifie si la durée minimum est respecté ou si les dates de début et de fin sont correctes
+            // et si un autre évènement n'existe pas déjà sur cette période
 
             document.addEventListener("DOMContentLoaded", function () {
                 const createForm = document.querySelector("#createEventModal form");
@@ -1095,10 +1216,13 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 document.getElementById('taskIdDelay').value = taskId;
                 currentTaskElement = taskElement;
             }
-
         </script>
 
         <script>
+
+            // Fonction qui permet de drag un tâche dans une priorité et inversement
+            // Modification d'une tâche en changeant sa priorité
+
             var isCheckedBeforeDrag;
 
             function allowDrop(ev) {
@@ -1146,20 +1270,104 @@ if ($date == NULL || $date == date('Y-m-d')) {
             document.getElementById('createEventForm').onsubmit = async function (event) {
                 event.preventDefault();
 
+                var eventDate = document.getElementById("eventDate").value;
+                var startTime = document.getElementById("startTime").value;
+                var endTime = document.getElementById("endTime").value;
+
+                var dateStart = eventDate + ' ' + startTime;
+                var dateEnd = eventDate + ' ' + endTime;
+
                 if (!validateEventDuration()) {
                     return false;
                 }
 
-                const isValidTime = await validateEventSameTime();
-                if (!isValidTime) {
+                try {
+                    const isValid = await validateEventSameTime(dateStart, dateEnd);
+                    if (!isValid) {
+                        alert("Un autre événement existe déjà sur cette période.");
+                        return false;
+                    }
+                } catch (error) {
+                    console.error("Erreur");
                     return false;
                 }
 
                 event.target.submit();
             };
 
+            // Fonction pour gérer le choix de l'utilisateur après avoir déplacé un événement,
+            // laisser la place vide ou créer un évènement sur la place vide
+
+            async function handleChoiceMove(choice) {
+
+                var idEvent = document.getElementById('updateEventId').value;
+                var EventId = idEvent.split('_')[1];
+                var date = <?php echo json_encode($date); ?>;
+                var oldDateStart = document.getElementById('originalStart').value;
+                var oldDateEnd = document.getElementById('originalEnd').value;
+                var dateStart = date + ' ' + oldDateStart;
+                var dateEnd = date + ' ' + oldDateEnd;
+
+                if (choice === 2) {
+                    var name = document.getElementById("moveEventName").value;
+                    var color = document.getElementById("moveEventColor").value;
+                } else {
+                    var name = null;
+                    var color = null;
+                }
+
+                try {
+
+                    // Vérifie si le nouvel événement peut être créé, si l'emplacement est libre
+                    const isValid = await validateEventSameTime(dateStart, dateEnd);
+                    console.log(dateStart, dateEnd, EventId);
+                    if (!isValid) {
+                        alert("Un autre événement existe déjà sur cette période.");
+                        return false;
+                    } else {
+                        var formData = new FormData();
+                        formData.append('choice', choice.toString());
+                        formData.append('idEvent', EventId.toString());
+                        formData.append('oldDateStart', dateStart);
+                        formData.append('oldDateEnd', dateEnd);
+                        if (name) {
+                            formData.append('name', name);
+                        }
+                        if (color) {
+                            formData.append('color', color);
+                        }
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=choiceMove", true);
+                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                        xhr.send(new URLSearchParams(formData));
+
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                closeMoveEventModal();
+                                window.location.reload();
+                            } else {
+                                console.error("Failed to create event with status: " + xhr.status);
+                            }
+                        };
+                    }
+                } catch (error) {
+                    console.error("Erreur");
+                    return false;
+                }
+            }
+
+            function closeMoveEventModal() {
+                var moveEventModal = bootstrap.Modal.getInstance(document.getElementById('moveEventModal'));
+                moveEventModal.hide();
+            }
+
         </script>
 
+    </div>
+    <div id="messageSameTime" style="
+    position: fixed; bottom: 0; width: 80%; background-color: #f8d7da; color: #721c24; text-align: center; padding: 15px; margin-bottom: 15px; display: none;">
+        Un autre événement existe déjà sur cette période.
     </div>
 </body>
 </html>

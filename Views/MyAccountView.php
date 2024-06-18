@@ -9,6 +9,9 @@
 </head>
 <body>
 <?php
+
+// Affichage des informations de l'utilisateur connecté
+
 use Repositories\UserRepository;
 $connectedUser = UserRepository::getConnectedUser();
 ?>
@@ -39,6 +42,7 @@ $connectedUser = UserRepository::getConnectedUser();
                 <input type="password" class="form-control" name="mdpActuel" placeholder="Mot de passe actuel" required>
             </div>
             <?php
+            // Affichage de l'erreur de modification du compte
             if (isset($erreur_modification)) {
                 echo '<div class="error-message">' . $erreur_modification . '</div>';
             }
@@ -47,6 +51,7 @@ $connectedUser = UserRepository::getConnectedUser();
         </form>
 
         <?php
+        // Affichage de l'erreur de modification du compte
         if (isset($modification)) {
             echo '<div class="success-message">' . $modification . '</div>';
         }
@@ -68,6 +73,7 @@ $connectedUser = UserRepository::getConnectedUser();
                            required>
                 </div>
                 <?php
+                // Affichage de l'erreur de suppression du compte
                 if (isset($erreur_suppression)) {
                     echo '<div class="error-message">' . $erreur_suppression . '</div>';
                 }
@@ -84,6 +90,10 @@ $connectedUser = UserRepository::getConnectedUser();
 </div>
 
 <script>
+
+    // Gère si les mots de passe correspondent lors de la modification du compte
+    // Gère la modification du mot de passe, qui demande une confirmation du mot passe choisi et de du mot de passe actuel
+
     function checkPassword() {
         var mdpActuel = document.getElementsByName('mdpActuel')[0].value;
         var newPassword = document.getElementsByName('nouveauMdp')[0].value;
@@ -126,6 +136,8 @@ $connectedUser = UserRepository::getConnectedUser();
         resetDeleteForm();
     }
 
+    // Reintialise le formulaire de suppression du compte après l'avoir annulé
+
     function resetDeleteForm() {
         var submitDeleteBtn = document.getElementById('submitDeleteBtn');
         var errorSpan = document.getElementById('deletePasswordError');
@@ -134,6 +146,7 @@ $connectedUser = UserRepository::getConnectedUser();
         errorSpan.innerHTML = "";
     }
 
+    // Gère si le mot de passe est saisi lors de la suppression du compte
     function deleteAccount() {
         var confirmDeletePassword = document.getElementsByName('confirmDeletePassword')[0].value;
         var errorSpan = document.getElementById('deletePasswordError');

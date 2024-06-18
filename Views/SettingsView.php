@@ -30,6 +30,10 @@
 
 </div>
 <script>
+
+    // Gère les parametres du site dont changement de thème
+    // Finalement pas mis en place sur le site
+
     document.addEventListener('DOMContentLoaded', () => {
         const themeToggleButton = document.getElementById('theme-toggle');
         const iconBrightness = themeToggleButton.querySelector('.bi-brightness-high-fill');

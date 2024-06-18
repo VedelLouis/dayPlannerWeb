@@ -16,9 +16,6 @@
             <a href="index.php?controller=account&action=account">Mon compte&nbsp;<i class="bi bi-person"></i></a>
         </li>
         <li>
-            <a href="index.php?controller=settings&action=index">Paramètres&nbsp;<i class="bi bi-gear"></i></a>
-        </li>
-        <li>
             <a href="index.php?controller=connexion&action=deconnect">Déconnexion&nbsp;<i class="bi bi-door-open"></i></a>
         </li>
     </ul>

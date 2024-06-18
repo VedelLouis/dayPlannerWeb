@@ -47,6 +47,10 @@
 </div>
 
 <script>
+
+    // Gère si les mots de passe correspondent
+    // Si les mots de passe ne correspondent pas, le bouton de soumission est désactivé
+
     function checkPassword() {
         var password = document.getElementById('password').value;
         var passwordConfirm = document.getElementById('passwordConfirm').value;
@@ -60,6 +64,9 @@
             document.getElementById('submitBtn').disabled = false;
         }
     }
+
+    // Gère si l'identifiant est valide, correspond à la regex d'un email
+    // Si l'identifiant n'est pas valide, le bouton de soumission est désactivé
 
     function checkEmail() {
         var login = document.getElementById('login').value;
