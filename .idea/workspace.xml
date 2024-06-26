@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="drag">
+    <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="dev finit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repositories/EventRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/EventRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/AccueilView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/AccueilView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/ConnexionView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/ConnexionView.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/CreerAccountView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/CreerAccountView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/MenuView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MenuView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/MyAccountView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/MyAccountView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/SettingsView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/SettingsView.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +89,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.language&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;web.server&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\PhpStorm 2023.2.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -240,7 +235,13 @@
       <workItem from="1718557330086" duration="8248000" />
       <workItem from="1718569954780" duration="5932000" />
       <workItem from="1718623319066" duration="17206000" />
-      <workItem from="1718708957918" duration="4143000" />
+      <workItem from="1718708957918" duration="4178000" />
+      <workItem from="1718847502991" duration="297000" />
+      <workItem from="1718883484116" duration="110000" />
+      <workItem from="1718910016544" duration="1048000" />
+      <workItem from="1718980929358" duration="5480000" />
+      <workItem from="1719320170151" duration="560000" />
+      <workItem from="1719348163144" duration="249000" />
     </task>
     <task id="LOCAL-00001" summary="10/01">
       <option name="closed" value="true" />
@@ -394,7 +395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718568331673</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="dev finit">
+      <option name="closed" value="true" />
+      <created>1718721731988</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1718721731988</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -424,7 +433,8 @@
     <MESSAGE value="fix bug updateEvent a faire" />
     <MESSAGE value="bug update event + validateEventSameTime fixed" />
     <MESSAGE value="drag" />
-    <option name="LAST_COMMIT_MESSAGE" value="drag" />
+    <MESSAGE value="dev finit" />
+    <option name="LAST_COMMIT_MESSAGE" value="dev finit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

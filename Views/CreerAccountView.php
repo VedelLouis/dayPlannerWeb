@@ -42,7 +42,6 @@
         <form id="back-form" action="index.php?controller=connexion&action=index" method="post">
             <button type="submit" class="btn btn-back btn-block">Annuler</button>
         </form>
-
     </div>
 </div>
 

@@ -977,6 +977,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                             endHour = 0;
                         }
                         timeEndElement.textContent = endHour.toString().padStart(2, '0') + ":" + endMinute.toString().padStart(2, '0');
+
                     }
                 } catch (error) {
                     console.error("Erreur");
