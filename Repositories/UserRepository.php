@@ -17,7 +17,7 @@ class UserRepository
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://dayplanner.tech/api/?controller=connexion&action=connect");
+        curl_setopt($ch, CURLOPT_URL, "https://projects.lvedel.com/dayplanner/api/?controller=connexion&action=connect");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -52,7 +52,7 @@ class UserRepository
     {
         if (isset($_COOKIE['PHPSESSID'])) {
             $session_id = $_COOKIE['PHPSESSID'];
-            $url = "https://dayplanner.tech/api/?controller=account&action=index";
+            $url = "https://projects.lvedel.com/dayplanner/api/?controller=account&action=index";
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -84,7 +84,7 @@ class UserRepository
 
     public static function getUserById($idUser)
     {
-        $url = "https://dayplanner.tech/api/?controller=account&action=user&iduser=" . $idUser;
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=account&action=user&iduser=" . $idUser;
 
         $data = file_get_contents($url);
         $userData = json_decode($data, true);
@@ -114,7 +114,7 @@ class UserRepository
             'lastname' => $lastname
         );
 
-        $url = "https://dayplanner.tech/api/?controller=account&action=create";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=account&action=create";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -151,7 +151,7 @@ class UserRepository
             'lastname' => $lastname
         );
 
-        $url = "https://dayplanner.tech/api/?controller=account&action=edit";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=account&action=edit";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -178,7 +178,7 @@ class UserRepository
 
     public static function deleteUser($confirmDeletePassword) {
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=account&action=delete";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=account&action=delete";
 
         $postData = array(
             'confirmDeletePassword' => $confirmDeletePassword
@@ -209,7 +209,7 @@ class UserRepository
 
     public static function deconnectUser() {
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=connexion&action=deconnect";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=connexion&action=deconnect";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -221,7 +221,7 @@ class UserRepository
     public static function session()
     {
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=connexion&action=session";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=connexion&action=session";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

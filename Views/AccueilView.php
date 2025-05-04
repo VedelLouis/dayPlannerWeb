@@ -71,7 +71,7 @@
             formData.append('date', date);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=create", true);
+            xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=task&action=create", true);
             xhr.responseType = 'json';
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send(new URLSearchParams(formData));
@@ -128,7 +128,7 @@
             formData.append('idTask', taskId);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=delete", true);
+            xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=task&action=delete", true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send(new URLSearchParams(formData));
         }
@@ -148,7 +148,7 @@
             formData.append('date', newDate);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=delay", true);
+            xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=task&action=delay", true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send(formData);
         }
@@ -202,7 +202,7 @@
                     formData.append('idEvent', idEvent);
                 }
 
-                fetch('https://dayplanner.tech/api/?controller=event&action=sameTime', {
+                fetch('https://projects.lvedel.com/dayplanner/api/?controller=event&action=sameTime', {
                     method: 'POST',
                     body: new URLSearchParams(formData),
                     headers: {
@@ -266,7 +266,7 @@
             formData.append('color', eventColor);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=update", true);
+            xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=event&action=update", true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send(new URLSearchParams(formData));
 
@@ -965,7 +965,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         formData.append('dateEnd', formattedEndDate);
 
                         var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=updateTime", true);
+                        xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=event&action=updateTime", true);
                         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                         xhr.send(new URLSearchParams(formData));
 
@@ -1162,7 +1162,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 formData.append('done', doneTask);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=update", true);
+                xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=task&action=update", true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.send(new URLSearchParams(formData));
 
@@ -1257,7 +1257,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                 formData.append('priority', priority);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://dayplanner.tech/api/?controller=task&action=change", true);
+                xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=task&action=change", true);
                 xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                 xhr.send(new URLSearchParams(formData));
 
@@ -1339,7 +1339,7 @@ if ($date == NULL || $date == date('Y-m-d')) {
                         }
 
                         var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "https://dayplanner.tech/api/?controller=event&action=choiceMove", true);
+                        xhr.open("POST", "https://projects.lvedel.com/dayplanner/api/?controller=event&action=choiceMove", true);
                         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                         xhr.send(new URLSearchParams(formData));
 

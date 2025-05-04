@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="974ad911-64c0-4201-99c9-b25c797f21f2" name="Changes" comment="dev finit">
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/EventController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/EventController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/NoteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/NoteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/EventRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/EventRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/NoteRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/NoteRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/TaskRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/TaskRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/UserRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Views/AccueilView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/AccueilView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Views/CreerAccountView.php" beforeDir="false" afterPath="$PROJECT_DIR$/Views/CreerAccountView.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +37,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;VedelLouis&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/VedelLouis/dayPlannerWeb.git&quot;,
+    &quot;accountId&quot;: &quot;6d22cca8-bd59-491e-a62d-ffe6aea4d13b&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -69,7 +87,7 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2ZhyA81uSwd7FonRGtohESgFwBB" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -78,8 +96,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/llede/PhpstormProjects/dayPlanner/Views&quot;,
@@ -99,6 +119,14 @@
       <recent name="C:\Users\llede\PhpstormProjects\dayPlanner\Views" />
       <recent name="C:\Users\llede\PhpstormProjects\dayPlanner\Styles" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-PS-251.23774.466" />
+        <option value="bundled-php-predefined-a98d8de5180a-aaeaa8632555-com.jetbrains.php.sharedIndexes-PS-251.23774.466" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -242,6 +270,7 @@
       <workItem from="1718980929358" duration="5480000" />
       <workItem from="1719320170151" duration="560000" />
       <workItem from="1719348163144" duration="249000" />
+      <workItem from="1746392295170" duration="679000" />
     </task>
     <task id="LOCAL-00001" summary="10/01">
       <option name="closed" value="true" />

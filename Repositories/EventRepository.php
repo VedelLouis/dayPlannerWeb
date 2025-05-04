@@ -10,7 +10,7 @@ class EventRepository
     public static function getEvents($date) {
 
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=event&action=index&date=".$date;
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=event&action=index&date=".$date;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -58,7 +58,7 @@ class EventRepository
             'color' => $color
         );
 
-        $url = "https://dayplanner.tech/api/?controller=event&action=create";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=event&action=create";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -95,7 +95,7 @@ class EventRepository
             'color' => $color
         );
 
-        $url = "https://dayplanner.tech/api/?controller=event&action=update";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=event&action=update";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -128,7 +128,7 @@ class EventRepository
             'idEvent' => $idEvent
         );
 
-        $url = "https://dayplanner.tech/api/?controller=event&action=delete";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=event&action=delete";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

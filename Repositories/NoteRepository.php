@@ -8,7 +8,7 @@ class NoteRepository {
     public static function getNotes($date) {
 
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=note&action=index&date=".$date;
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=note&action=index&date=".$date;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -52,7 +52,7 @@ class NoteRepository {
             'date' => $date
         );
 
-        $url = "https://dayplanner.tech/api/?controller=note&action=create";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=note&action=create";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -86,7 +86,7 @@ class NoteRepository {
             'date' => $date
         );
 
-        $url = "https://dayplanner.tech/api/?controller=note&action=update";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=note&action=update";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

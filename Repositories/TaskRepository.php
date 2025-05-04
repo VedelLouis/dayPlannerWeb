@@ -10,7 +10,7 @@ class TaskRepository
     public static function getTasks($date) {
 
         $session_id = $_COOKIE['PHPSESSID'];
-        $url = "https://dayplanner.tech/api/?controller=task&action=index&date=".$date;
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=task&action=index&date=".$date;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -57,7 +57,7 @@ class TaskRepository
             'date' => $date
         );
 
-        $url = "https://dayplanner.tech/api/?controller=task&action=create";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=task&action=create";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -92,7 +92,7 @@ class TaskRepository
             'date' => $date
         );
 
-        $url = "https://dayplanner.tech/api/?controller=task&action=update";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=task&action=update";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -125,7 +125,7 @@ class TaskRepository
             'idTask' => $idTask
         );
 
-        $url = "https://dayplanner.tech/api/?controller=event&action=delete";
+        $url = "https://projects.lvedel.com/dayplanner/api/?controller=event&action=delete";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

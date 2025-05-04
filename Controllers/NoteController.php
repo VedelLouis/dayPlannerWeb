@@ -28,10 +28,10 @@ class NoteController {
 
         require_once "Repositories/NoteRepository.php";
         if ($text == "") {
-            header("Location: https://dayplanner.tech/index.php?controller=accueil&action=index&dateCalendar=".$date);
+            header("Location: https://projects.lvedel.com/dayplanner/index.php?controller=accueil&action=index&dateCalendar=".$date);
         } else {
             NoteRepository::createNote($text, $date);
-            header("Location: https://dayplanner.tech/index.php?controller=accueil&action=index&dateCalendar=".$date);
+            header("Location: https://projects.lvedel.com/dayplanner/api/index.php?controller=accueil&action=index&dateCalendar=".$date);
         }
     }
 
@@ -43,7 +43,7 @@ class NoteController {
         require_once "Repositories/NoteRepository.php";
 
         NoteRepository::updateNote($text, $date);
-        header("Location: https://dayplanner.tech/index.php?controller=accueil&action=index&dateCalendar=".$date);
+        header("Location: https://projects.lvedel.com/dayplanner/api/index.php?controller=accueil&action=index&dateCalendar=".$date);
     }
 
 }

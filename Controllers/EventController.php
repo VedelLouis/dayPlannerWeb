@@ -35,7 +35,7 @@ class EventController
 
         require_once "Repositories/UserRepository.php";
         EventRepository::createEvent($name, $dateStart, $dateEnd, $color);
-        header("Location: https://dayplanner.tech/index.php?controller=accueil&action=index&dateCalendar=" . $date);
+        header("Location: https://projects.lvedel.com/dayplanner/index.php?controller=accueil&action=index&dateCalendar=" . $date);
     }
 
     private function deleteEvent()
@@ -45,7 +45,7 @@ class EventController
         require_once "Repositories/UserRepository.php";
 
         EventRepository::deleteEvent($idEvent);
-        header("Location: https://dayplanner.tech/index.php?controller=accueil&action=index&dateCalendar=" . $date);
+        header("Location: https://projects.lvedel.com/dayplanner/api/index.php?controller=accueil&action=index&dateCalendar=" . $date);
     }
 
 }
